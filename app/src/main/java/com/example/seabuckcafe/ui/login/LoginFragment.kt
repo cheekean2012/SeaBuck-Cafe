@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.seabuckcafe.R
@@ -37,9 +35,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.loginFragment = this@LoginFragment
 
-        //hide action bar when starting to create login fragment
-        //(activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
         spannable()
     }
 
@@ -50,7 +45,7 @@ class LoginFragment : Fragment() {
                 goToRegister()
             }
         }
-
+        //set text available clicked
         spannable.setSpan(
             clickableSpan,
             23, 31,
@@ -79,9 +74,12 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 
+    fun goToHomeScreen() {
+        findNavController().navigate(R.id.action_loginFragment_to_homeUserFragment)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         binding = null
     }
 }

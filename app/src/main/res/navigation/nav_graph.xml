@@ -18,8 +18,11 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
-            android:id="@+id/action_loginFragment_to_homeUserFragment2"
+            android:id="@+id/action_loginFragment_to_homeUserFragment"
             app:destination="@id/homeUserFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeAdminFragment"
+            app:destination="@id/homeAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -41,4 +44,9 @@
         android:name="com.example.seabuckcafe.ui.home.HomeUserFragment"
         android:label=""
         tools:layout="@layout/fragment_home_user"/>
+    <fragment
+        android:id="@+id/homeAdminFragment"
+        android:name="com.example.seabuckcafe.ui.home.HomeAdminFragment"
+        android:label="Welcome Back!"
+        tools:layout="@layout/fragment_home_admin"/>
 </navigation>

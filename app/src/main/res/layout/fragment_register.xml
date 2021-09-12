@@ -9,15 +9,33 @@
             type="com.example.seabuckcafe.ui.register.RegisterFragment" />
     </data>
 
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/fragment_horizontal_margin"
-        android:paddingTop="@dimen/fragment_vertical_margin"
-        android:paddingRight="@dimen/fragment_horizontal_margin"
-        android:paddingBottom="@dimen/fragment_vertical_margin"
         tools:context=".ui.register.RegisterFragment">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/topAppBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:onClickListener="@{() -> registerFragment.goToLogin()}"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                android:layout_height="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <TextView
             android:id="@+id/sign_up_text"
@@ -25,8 +43,8 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:layout_margin="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/fragment_default_margin"
+            app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,6 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/full_name"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             app:startIconDrawable="@drawable/ic_person"
             android:layout_marginTop="@dimen/fragment_vertical_margin"
             app:layout_constraintTop_toBottomOf="@id/sign_up_text"
@@ -51,6 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
             app:startIconDrawable="@drawable/ic_email"
             android:layout_marginTop="@dimen/fragment_vertical_margin"
             app:layout_constraintTop_toBottomOf="@id/fullName"
@@ -68,6 +88,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/phone_number"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+
             app:startIconDrawable="@drawable/ic_phone"
             android:layout_marginTop="@dimen/fragment_vertical_margin"
             app:layout_constraintTop_toBottomOf="@id/emailAddress"
@@ -86,6 +108,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/prompt_password"
             app:startIconDrawable="@drawable/ic_password"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+
             android:layout_marginTop="@dimen/fragment_vertical_margin"
             app:layout_constraintTop_toBottomOf="@id/phoneNumber"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +128,8 @@
             android:elevation="4dp"
             android:layout_marginTop="16dp"
             android:padding="16dp"
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+
             android:onClick="@{() -> registerFragment.goToLogin()}"
             app:layout_constraintTop_toBottomOf="@id/password"
             app:layout_constraintStart_toStartOf="parent"

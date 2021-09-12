@@ -18,5 +18,8 @@
     <color name="secondaryDarkColor">#a69b97</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
-
+    <color name="transparentColor">#00000000</color>
+    <color name="backgroundColor">#e0e0e0</color>
+    <color name="cardViewColor">#b0bec5</color>
+    <color name="darkThemeActionBarColor">#212121</color>
 </resources>

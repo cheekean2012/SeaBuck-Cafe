@@ -19,4 +19,18 @@
 
     <!--Strings related to home menu-->
     <string name="typeOfFood">WHAT TYPE OF FOOD YOU CHOOSE?</string>
+    <string name="menu">Menu</string>
+    <string name="order">Order</string>
+    <string name="report">Report</string>
+    <string name="logout">Logout</string>
+
+    <!--Strings related to user menu-->
+    <string name="magnify">Search</string>
+    <string name="cart">Cart</string>
+    <string name="profile">Profile</string>
+    <string name="about_us">About Us</string>
+    
+    <!--Strings related to AppBar with Navigation Drawer-->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

@@ -1,10 +1,13 @@
 package com.example.seabuckcafe.ui.register
 
+import android.app.ActionBar
 import android.icu.text.CaseMap
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentRegisterBinding
@@ -12,6 +15,7 @@ import com.example.seabuckcafe.databinding.FragmentRegisterBinding
 class RegisterFragment : Fragment() {
 
     private var binding: FragmentRegisterBinding? = null
+    private lateinit var navController: WindowInsetsController
 
     override fun onCreateView(
         inflater: LayoutInflater,
