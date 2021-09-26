@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "12413536905",
+    "project_id": "seabuckcafe",
+    "storage_bucket": "seabuckcafe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12413536905:android:f378133a957ffd8d2a5458",
+        "android_client_info": {
+          "package_name": "com.example.seabuckcafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12413536905-erlncanncqaegnj9hqile6qk55k3pu9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seabuckcafe",
+            "certificate_hash": "cc8dcd68ea5b4826723b218aec34cb60fd83656a"
+          }
+        },
+        {
+          "client_id": "12413536905-l4hcv1o9g3arpuacku5rabo3g8rimsit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1YSz0TzawvBvzm_r2lXythAfpObf9lkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12413536905-l4hcv1o9g3arpuacku5rabo3g8rimsit.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
