@@ -3,17 +3,19 @@
     <style name="Theme.SeaBuckCafe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryVariantDay</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariantDay</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorOnSurface">@color/black</item>
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
-        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:colorBackground">@color/themeColor</item>
+        <item name="civ_border_color">@color/themeColor</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

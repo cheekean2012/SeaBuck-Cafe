@@ -7,7 +7,7 @@
     <string name="action_sign_up">Don\'t have an account? Sign up!</string>
     <string name="login_button">Login</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Invalid password</string>
     <string name="login_failed">"Login failed"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -16,6 +16,9 @@
     <string name="sign_up">Sign Up</string>
     <string name="full_name">Full Name</string>
     <string name="phone_number">Phone Number</string>
+    <string name="inValid_email">Invalid Email! Please enter valid email!</string>
+    <string name="empty_blank">The field should not be empty!</string>
+    <string name="minimum_six_length">Password at least 6 characters</string>
 
     <!--Strings related to home menu-->
     <string name="typeOfFood">WHAT TYPE OF FOOD YOU CHOOSE?</string>
@@ -29,8 +32,30 @@
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
     <string name="about_us">About Us</string>
-    
+    <string name="add_cart">Add Cart</string>
+
+    <!--Strings related to image view description-->
+    <string name="account_logo">Edit account logo</string>
+    <string name="map_marker_logo">Map marker logo</string>
+    <string name="phone_logo">phone logo</string>
+
+    <!--Strings related to user profile-->
+    <string name="edit_photo">Edit Photo</string>
+    <string name="background_picture">Background Picture</string>
+    <string name="account">Account</string>
+    <string name="address">Address</string>
+    <string name="current_address">Current Address</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="forward_edit_full_name">Edit full name</string>
+    <string name="forward_edit_password">Edit password</string>
+    <string name="forward_edit_phone_number">Edit phone number</string>
+    <string name="forward_edit_address">Edit address</string>
+    <string name="save">Save</string>
+    <string name="add_new">Add New</string>
+    <string name="new_address">New Address</string>
+
     <!--Strings related to AppBar with Navigation Drawer-->
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="your_address">Location Address</string>
 </resources>

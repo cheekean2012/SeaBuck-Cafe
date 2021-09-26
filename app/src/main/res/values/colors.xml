@@ -12,14 +12,30 @@
 
     <color name="primaryColor">#8d6e63</color>
     <color name="primaryLightColor">#be9c91</color>
-    <color name="primaryDarkColor">#5f4339</color>
+    <color name="primaryVariantDay">#5f4339</color>
     <color name="secondaryColor">#d7ccc8</color>
     <color name="secondaryLightColor">#fffffb</color>
-    <color name="secondaryDarkColor">#a69b97</color>
+    <color name="secondaryVariantDay">#a69b97</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
-    <color name="transparentColor">#00000000</color>
-    <color name="backgroundColor">#e0e0e0</color>
+    <color name="themeColor">#e0e0e0</color>
+
+    <!--custom dark theme color-->
+
+    <color name="primaryDarkColor">#BB86FC</color>
+    <color name="primaryVariant">#3700b3</color>
+    <color name="onPrimaryDarkColor">#000000</color>
+    <color name="secondaryDarkColor">#03dac6</color>
+    <color name="onSecondaryDarkColor">#000000</color>
+    <color name="background">#121212</color>
+    <color name="surface">#121212</color>
+    <color name="onBackground">#ffffff</color>
+    <color name="onSurface">#ffffff</color>
+    <color name="error">#cf6679</color>
+    <color name="onError">#000000</color>
+    <color name="red">#cc0a1e</color>
+
     <color name="cardViewColor">#b0bec5</color>
-    <color name="darkThemeActionBarColor">#212121</color>
+    <color name="darkGrey">#212121</color>
+    <color name="transparentColor">#00000000</color>
 </resources>

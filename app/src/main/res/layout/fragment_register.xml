@@ -4,136 +4,146 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="registerFragment"
             type="com.example.seabuckcafe.ui.register.RegisterFragment" />
     </data>
 
-
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.register.RegisterFragment">
+        android:layout_height="match_parent">
 
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/topAppBarLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.register.RegisterFragment">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/topAppBarLayout"
                 android:layout_width="match_parent"
-                android:onClickListener="@{() -> registerFragment.goToLogin()}"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                android:layout_height="?attr/actionBarSize" />
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                android:fitsSystemWindows="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+            </com.google.android.material.appbar.AppBarLayout>
 
 
-        <TextView
-            android:id="@+id/sign_up_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:layout_margin="@dimen/fragment_default_margin"
-            app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/sign_up_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fragment_default_margin"
+                android:text="@string/sign_up"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topAppBarLayout" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fullName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/full_name"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            app:startIconDrawable="@drawable/ic_person"
-            android:layout_marginTop="@dimen/fragment_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@id/sign_up_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fullNameField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                android:layout_marginTop="@dimen/fragment_vertical_margin"
+                android:hint="@string/full_name"
+                app:errorIconDrawable="@drawable/ic_error"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_up_text"
+                app:startIconDrawable="@drawable/ic_person">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fullNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_email"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            app:startIconDrawable="@drawable/ic_email"
-            android:layout_marginTop="@dimen/fragment_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@id/fullName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailAddressField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                android:layout_marginTop="@dimen/fragment_vertical_margin"
+                android:hint="@string/prompt_email"
+                app:errorIconDrawable="@drawable/ic_error"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fullNameField"
+                app:startIconDrawable="@drawable/ic_email">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailAddressEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumberField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                android:layout_marginTop="@dimen/fragment_vertical_margin"
+                app:errorIconDrawable="@drawable/ic_error"
+                android:hint="@string/phone_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailAddressField"
+                app:startIconDrawable="@drawable/ic_phone">
 
-            app:startIconDrawable="@drawable/ic_phone"
-            android:layout_marginTop="@dimen/fragment_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@id/emailAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                android:layout_marginTop="@dimen/fragment_vertical_margin"
+                android:hint="@string/prompt_password"
+                app:endIconMode="password_toggle"
+                app:errorIconDrawable="@drawable/ic_error"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneNumberField"
+                app:startIconDrawable="@drawable/ic_password">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            app:startIconDrawable="@drawable/ic_password"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            android:layout_marginTop="@dimen/fragment_vertical_margin"
-            app:layout_constraintTop_toBottomOf="@id/phoneNumber"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+                android:layout_marginTop="16dp"
+                android:elevation="8dp"
+                android:onClick="@{() -> registerFragment.signUpUser()}"
+                android:padding="16dp"
+                android:text="@string/sign_up"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/passwordField" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:elevation="4dp"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-
-            android:onClick="@{() -> registerFragment.goToLogin()}"
-            app:layout_constraintTop_toBottomOf="@id/password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
