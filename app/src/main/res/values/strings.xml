@@ -53,6 +53,7 @@
     <string name="save">Save</string>
     <string name="add_new">Add New</string>
     <string name="new_address">New Address</string>
+    <string name="edit_address">Edit Address</string>
 
     <!--Strings related to AppBar with Navigation Drawer-->
     <string name="open">Open</string>

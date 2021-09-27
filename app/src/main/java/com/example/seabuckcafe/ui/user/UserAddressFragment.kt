@@ -39,10 +39,12 @@ class UserAddressFragment : Fragment() {
 
         userAddressList = ArrayList()
 
-        //recyclerView = requireActivity().findViewById<RecyclerView>(R.id.userAddressRecyclerView)
+        // Short form version from requireActivity().findViewById<RecyclerView>(R.id.userAddressRecyclerView)
         recyclerView = binding.userAddressRecyclerView
 
+        // Declare recyclerView in linear layout manager with context
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // Get adapter data form UserAddressAdapter class
         recyclerView.adapter = UserAddressAdapter(requireContext(), userAddressList)
 
         binding.userAddressAddButton.setOnClickListener { addInfo() }
@@ -50,22 +52,30 @@ class UserAddressFragment : Fragment() {
     }
 
     private fun addInfo() {
+        // Get add address item layout
         val inflater = LayoutInflater.from(requireContext())
             .inflate(R.layout.add_address_item, null)
 
+        // Get edit text id
         val newAddress = inflater.findViewById<TextInputEditText>(R.id.newAddressEditText)
 
+        // Create dialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(inflater)
             .setPositiveButton("OK") {
-                _, _ ->
+                dialog, _ ->
                 val address = newAddress.text.toString()
+                // Add data into useAddressList
                 userAddressList.add(UserAddressData("Address: $address"))
+
+                // Save the data into adapter and display to recyclerView
                 recyclerView.adapter?.notifyDataSetChanged()
                 Toast.makeText(requireContext(), "Added successful!", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
             }
             .setNegativeButton("Cancel") {
-                _, _ ->
+                dialog, _ ->
+                dialog.dismiss()
             }
             .create()
             .show()
