@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/userAddressFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -24,7 +24,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_homeAdminFragment"
-            app:destination="@id/homeAdminFragment" />
+            app:destination="@id/homeAdminFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -54,21 +56,31 @@
         android:id="@+id/homeAdminFragment"
         android:name="com.example.seabuckcafe.ui.home.HomeAdminFragment"
         android:label="Welcome Back!"
-        tools:layout="@layout/fragment_home_admin"/>
+        tools:layout="@layout/fragment_home_admin">
+        <action
+            android:id="@+id/action_homeAdminFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeAdminFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_adminFoodItemListFragment"
+            app:destination="@id/adminFoodItemListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/foodItemListFragment"
         android:name="com.example.seabuckcafe.ui.user.FoodItemListFragment"
         android:label=""
-        tools:layout="@layout/fragment_food_item_list">
+        tools:layout="@layout/fragment_user_food_item_list">
         <action
-            android:id="@+id/action_foodItemListFragment_to_foodDetailFragment"
-            app:destination="@id/foodDetailFragment" />
+            android:id="@+id/action_userFoodItemListFragment_to_userFoodDetailFragment"
+            app:destination="@id/userfoodDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/foodDetailFragment"
-        android:name="com.example.seabuckcafe.ui.user.FoodDetailFragment"
+        android:id="@+id/userfoodDetailFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserFoodDetailFragment"
         android:label=""
-        tools:layout="@layout/fragment_food_detail">
+        tools:layout="@layout/fragment_user_food_detail">
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -94,5 +106,25 @@
         android:name="com.example.seabuckcafe.ui.user.UserAddressFragment"
         android:label=""
         tools:layout="@layout/fragment_user_address">
+    </fragment>
+    <fragment
+        android:id="@+id/adminFoodDetailFragment"
+        android:name="com.example.seabuckcafe.ui.admin.AdminFoodDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_food_detail">
+        <action
+            android:id="@+id/action_adminFoodDetailFragment_to_adminFoodItemListFragment"
+            app:destination="@id/adminFoodItemListFragment"
+            app:popUpTo="@id/adminFoodDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFoodItemListFragment"
+        android:name="com.example.seabuckcafe.ui.admin.AdminFoodItemListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_food_item_list">
+        <action
+            android:id="@+id/action_adminFoodItemListFragment_to_adminFoodDetailFragment"
+            app:destination="@id/adminFoodDetailFragment" />
     </fragment>
 </navigation>

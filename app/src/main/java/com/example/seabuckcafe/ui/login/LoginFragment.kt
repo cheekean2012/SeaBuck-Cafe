@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentLoginBinding
 import com.example.seabuckcafe.firestore.Firestore
+import com.example.seabuckcafe.models.Admin
 import com.example.seabuckcafe.models.User
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -164,14 +165,26 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun loginSuccess(user: User){
+    fun userLoginSuccess(user: User){
 
         Log.d("Full Name", user.userName)
         Log.d("Email Address", user.email)
         Log.d("Phone Number", user.phoneNumber.toString())
+        Log.d("isUser ", user.isUser.toString())
 
         Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeUserFragment)
+    }
+
+    fun adminLoginSuccess(admin: Admin) {
+
+        Log.d("Full Name", admin.userName)
+        Log.d("Email Address", admin.email)
+        Log.d("Phone Number", admin.phoneNumber.toString())
+        Log.d("isUser ", admin.isUser.toString())
+
+        Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_loginFragment_to_homeAdminFragment)
     }
 
 }

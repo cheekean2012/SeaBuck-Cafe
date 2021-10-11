@@ -24,13 +24,12 @@
         <item name="civ_circle_background_color">@color/background</item>
         <item name="colorOnBackground">@color/onBackground</item>
         <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/onSurface</item>
+        <item name="colorOnSurface">@color/white</item>
         <item name="android:listDivider">@color/white</item>
         <item name="android:windowTranslucentStatus">true</item>
+
     </style>
 
-    <!--
-    @style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
-    -->
+
 
 </resources>

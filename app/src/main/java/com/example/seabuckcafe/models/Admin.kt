@@ -1,16 +1,15 @@
 package com.example.seabuckcafe.models
 
-class User (
+class Admin (
     val id: String = "",
     val userName: String = "",
+    val about: String = "",
+    val address: String = "",
     val email: String = "",
     val phoneNumber: Long = 0,
-    val image: String = "",
-    val password: String = "",
-    val isUser: Boolean = true)
+    val isUser: Boolean = false)
 
-
-class UserMenuItem (
+class AdminMenuItem (
     var image: String = "",
     val title: String = "",
     val type: String = "",

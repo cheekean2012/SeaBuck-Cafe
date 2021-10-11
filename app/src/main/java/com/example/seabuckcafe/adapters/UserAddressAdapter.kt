@@ -48,7 +48,7 @@ class UserAddressAdapter(
                 when (it.itemId) {
                     R.id.editText -> {
                         // Get and reuse add address item layout
-                        val inflater = LayoutInflater.from(context).inflate(R.layout.add_address_item, null)
+                        val inflater = LayoutInflater.from(context).inflate(R.layout.dialog_add_address_item, null)
                         // Change add new address to edit address
                         inflater.findViewById<TextView>(R.id.addressTitle).setText(R.string.edit_address)
 
@@ -62,7 +62,7 @@ class UserAddressAdapter(
                                 dialog, _ ->
                                 position.address = "Address: " + newAddress.text.toString()
 
-                                // Specify the item when data changed
+                                // Specify the item when data has been changed and display
                                 notifyItemChanged(adapterPosition)
                                 Toast.makeText(context,"Edited Successful!", Toast.LENGTH_SHORT).show()
                                 dialog.dismiss()
@@ -85,7 +85,9 @@ class UserAddressAdapter(
                             .setMessage("Are you sure want to delete?")
                             .setPositiveButton("Yes") {
                                 dialog, _ ->
+                                // Remove data from specify position
                                 userAddressList.removeAt(adapterPosition)
+                                // After remove and display
                                 notifyDataSetChanged()
                                 Toast.makeText(context, "Deleted Successful!", Toast.LENGTH_SHORT).show()
                                 dialog.dismiss()

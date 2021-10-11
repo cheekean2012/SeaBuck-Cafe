@@ -44,6 +44,7 @@ class UserAddressFragment : Fragment() {
 
         // Declare recyclerView in linear layout manager with context
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         // Get adapter data form UserAddressAdapter class
         recyclerView.adapter = UserAddressAdapter(requireContext(), userAddressList)
 
@@ -54,7 +55,7 @@ class UserAddressFragment : Fragment() {
     private fun addInfo() {
         // Get add address item layout
         val inflater = LayoutInflater.from(requireContext())
-            .inflate(R.layout.add_address_item, null)
+            .inflate(R.layout.dialog_add_address_item, null)
 
         // Get edit text id
         val newAddress = inflater.findViewById<TextInputEditText>(R.id.newAddressEditText)

@@ -95,7 +95,8 @@ class RegisterFragment : Fragment() {
                             firebaseUser.uid,
                             name,
                             email,
-                            binding.phoneNumberEditText.text.toString().toLong())
+                            binding.phoneNumberEditText.text.toString().toLong(),
+                            isUser = true)
 
                     Firestore().registerUser(this, userInfo)
 
@@ -110,12 +111,12 @@ class RegisterFragment : Fragment() {
 
     fun userSignUpSuccess() {
         val user: FirebaseUser? = auth.currentUser
-        //user!!.sendEmailVerification()
-          //  .addOnCompleteListener { task ->
-            //    if (task.isSuccessful) {
+        user!!.sendEmailVerification()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     Utils().backward(this, R.id.loginFragment)
                     Log.d(TAG, "Email sent. Please verify your account!")
-              //  }
-            //}
+                }
+            }
     }
 }

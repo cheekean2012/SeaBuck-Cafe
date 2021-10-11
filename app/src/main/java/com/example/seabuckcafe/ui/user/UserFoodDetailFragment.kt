@@ -6,25 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.seabuckcafe.R
-import com.example.seabuckcafe.databinding.FragmentFoodDetailBinding
+import com.example.seabuckcafe.databinding.FragmentUserFoodDetailBinding
 import com.example.seabuckcafe.utils.Utils
 
 
-class FoodDetailFragment : Fragment() {
+class UserFoodDetailFragment : Fragment() {
 
-    private lateinit var binding: FragmentFoodDetailBinding
+    private lateinit var binding: FragmentUserFoodDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFoodDetailBinding.inflate(inflater, container, false)
+        binding = FragmentUserFoodDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.foodDetailFragment = this@FoodDetailFragment
+        binding.userFoodDetailFragment = this@UserFoodDetailFragment
 
         binding.topAppBar.setNavigationOnClickListener{ backward() }
     }

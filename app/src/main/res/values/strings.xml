@@ -59,4 +59,26 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="your_address">Location Address</string>
+
+    <!--Strings related to admin menu-->
+    <string name="upload_image">Upload Image</string>
+    <string name="upload_gallery">Upload Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="image_selector">Select Image Action</string>
+    <string name="food_title">Title</string>
+    <string name="food_type">Type</string>
+    <string name="food_price">Price</string>
+    <string name="food_description">Food Description</string>
+    <string name="select_food_type">Select Food Type</string>
+    <string name="available">Available</string>
+    <string name="rm">RM%s</string>
+
+    <string name="foodType1">breakfast</string>
+    <string name="foodType2">lunch</string>
+    <string name="foodType3">dinner</string>
+    <string name="foodType4">dessert</string>
+    <string name="foodType5">drink</string>
+    <string name="foodType6">others</string>
+    <string name="food_image">food image</string>
 </resources>
