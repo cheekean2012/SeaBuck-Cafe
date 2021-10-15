@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="adminViewModel"
-            type="com.example.seabuckcafe.models.AdminFoodDetailViewModel" />
+            name="viewModel"
+            type="com.example.seabuckcafe.models.MenuSharedViewModel" />
 
         <variable
             name="adminFoodDetailFragment"
@@ -49,7 +49,8 @@
                 android:background="@color/imageBackground"
                 android:contentDescription="@string/upload_image"
                 android:elevation="8dp"
-                android:src="@drawable/ic_upload"
+                android:src="@{viewModel.image}"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topAppBarLayout" />
@@ -71,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/food_title"
+                    android:text="@{viewModel.title.toString()}"
                     android:inputType="text|textNoSuggestions" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/food_type"
+                    android:text="@{viewModel.type.toString()}"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:inputType="text|textNoSuggestions"/>
@@ -115,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/food_price"
+                    android:text="@{viewModel.price.toString()}"
                     android:inputType="numberDecimal|textNoSuggestions" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -144,6 +148,7 @@
                     android:overScrollMode="ifContentScrolls"
                     android:scrollbarStyle="insideInset"
                     android:hint="@string/food_description"
+                    android:text="@{viewModel.description.toString()}"
                     android:inputType="textMultiLine|textNoSuggestions" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -156,7 +161,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="@string/available"
                 android:textSize="18sp"
-                android:checked="true"
+                android:checked="@{viewModel.available}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/foodDescription" />

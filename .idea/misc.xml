@@ -44,10 +44,11 @@
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_profile.xml" value="0.264" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/header_navigation_drawer.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_admin_food_item.xml" value="0.25" />
-        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_food_item.xml" value="0.25" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_food_item.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_food_type_item.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_user_address_item.xml" value="0.264" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/backwards.xml" value="0.25416666666666665" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/edit_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/filter_and_add.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/header_background.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/nav_drawer.xml" value="0.25416666666666665" />

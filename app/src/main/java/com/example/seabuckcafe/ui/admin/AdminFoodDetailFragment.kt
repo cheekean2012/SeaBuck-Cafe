@@ -18,13 +18,16 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.adapters.FoodTypeListItemAdapter
 import com.example.seabuckcafe.databinding.DialogCustomListBinding
 import com.example.seabuckcafe.databinding.FragmentAdminFoodDetailBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.AdminMenuItem
+import com.example.seabuckcafe.models.MenuSharedViewModel
 import com.example.seabuckcafe.utils.Constants
 import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -37,13 +40,12 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 class AdminFoodDetailFragment: Fragment() {
     private lateinit var binding: FragmentAdminFoodDetailBinding
     private lateinit var mDialog: Dialog
     private var mImageUri: Uri? = null
-    private var mImageURL: String = ""
+    private val shareViewModel: MenuSharedViewModel by activityViewModels()
 
     // Camera setting for new API
     private var cameraLauncher = registerForActivityResult(
@@ -65,8 +67,9 @@ class AdminFoodDetailFragment: Fragment() {
             mImageUri = Uri.parse(path)
 
             // Set image and scale type
-            binding.foodImage.setImageURI(mImageUri)
-            binding.foodImage.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(requireContext())
+                .load(mImageUri)
+                .into(binding.foodImage)
         }
     }
 
@@ -77,8 +80,9 @@ class AdminFoodDetailFragment: Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             // Get gallery image uri
             mImageUri = it.data!!.data
-            binding.foodImage.setImageURI(mImageUri)
-            binding.foodImage.scaleType = ImageView.ScaleType.CENTER_CROP
+            Glide.with(requireContext())
+                .load(mImageUri)
+                .into(binding.foodImage)
         }
     }
 
@@ -93,45 +97,94 @@ class AdminFoodDetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.adminFoodDetailFragment = this@AdminFoodDetailFragment
+        binding.apply {
+            adminFoodDetailFragment = this@AdminFoodDetailFragment
 
-        binding.foodImage.setOnClickListener{ uploadPhoto() }
-        binding.topAppBar.setNavigationOnClickListener { backward() }
-        binding.foodTypeEditText.setOnClickListener { foodTypeDialog(resources.getString(R.string.select_food_type), Constants.foodType()) }
-        binding.addFoodItem.setOnClickListener { uploadFoodItem() }
+            Glide.with(requireContext())
+                .load(shareViewModel.image.value.toString())
+                .into(foodImage)
+
+            // Specify the fragment as the lifecycle owner
+            lifecycleOwner = viewLifecycleOwner
+
+            // Assign the view model to a property in the binding class
+            viewModel = shareViewModel
+
+            // Set to select use camera or gallery function to upload the picture on UI Controller
+            foodImage.setOnClickListener{ uploadPhoto() }
+
+            // Set top action bar item click
+            topAppBar.setNavigationOnClickListener { backward() }
+
+            // Set to list out food type in recycler view
+            foodTypeEditText.setOnClickListener { foodTypeDialog(resources.getString(R.string.select_food_type), Constants.foodType()) }
+
+            // Set to upload food menu item to firestore
+            addFoodItem.setOnClickListener { uploadFoodMenuItem() }
+        }
     }
 
-    private fun uploadFoodItem() {
+    private fun uploadFoodMenuItem() {
 
-        val title = binding.foodTitleText.text.toString().trim { it <= ' ' }
-        val type = binding.foodTypeEditText.text.toString().trim { it <= ' ' }
-        val price = binding.foodPriceText.text.toString().trim { it <= ' ' }
-        val description = binding.foodDescriptionText.text.toString().trim { it <= ' ' }
-        val switch = binding.switches.isChecked
+        // Check the share view model retrieve data from admin food item list is not null
+        // If not null, it will update to firebase
+        if (shareViewModel.image.value != null && shareViewModel.title.value != null
+            && shareViewModel.type.value != null && shareViewModel.description.value != null
+            && shareViewModel.price.value != null) {
 
-        if (mImageUri != null) {
+                binding.apply {
+                    shareViewModel.setTitle(foodTitleText.text.toString())
+                    shareViewModel.setType(foodTypeEditText.text.toString())
+                    shareViewModel.setPrice(foodPriceText.text.toString())
+                    shareViewModel.setDescription(foodDescriptionText.text.toString())
+                    shareViewModel.setAvailable(switches.isChecked.toString().toBoolean())
+                }
 
-            if (title.isNotEmpty() && type.isNotEmpty() && price.isNotEmpty() && description.isNotEmpty()) {
+                val updateFoodItem = AdminMenuItem(
+                    shareViewModel.id.value.toString(),
+                    shareViewModel.image.value.toString(),
+                    shareViewModel.title.value.toString(),
+                    shareViewModel.type.value.toString(),
+                    shareViewModel.price.value.toString(),
+                    shareViewModel.description.value.toString(),
+                    shareViewModel.available.value!!
+            )
+            Firestore().updateFoodMenuItem(this, mImageUri, updateFoodItem)
 
-                val foodItem = AdminMenuItem(
-                    "",
-                    title,
-                    type,
-                    price.toLong(),
-                    description,
-                    switch
-                )
+        // Upload to firebase
+        } else {
 
-                Firestore().uploadFoodImageToCloudStorage(this, mImageUri, foodItem)
+            val title = binding.foodTitleText.text.toString().trim { it <= ' ' }
+            val type = binding.foodTypeEditText.text.toString().trim { it <= ' ' }
+            val price = binding.foodPriceText.text.toString().trim { it <= ' ' }
+            val description = binding.foodDescriptionText.text.toString().trim { it <= ' ' }
+            val switch = binding.switches.isChecked
+
+            if (mImageUri != null) {
+
+                if (title.isNotEmpty() && type.isNotEmpty() && price.isNotEmpty() && description.isNotEmpty()) {
+
+                    val foodItem = AdminMenuItem(
+                        "",
+                        "",
+                        title,
+                        type,
+                        price,
+                        description,
+                        switch
+                    )
+
+                    Firestore().uploadFoodMenuItem(this, mImageUri, foodItem)
+                } else {
+                    Toast.makeText(requireContext(),
+                        "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
+                        .show()
+                }
             } else {
                 Toast.makeText(requireContext(),
-                    "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
+                    "Please insert image before add food menu!", Toast.LENGTH_SHORT)
                     .show()
             }
-        } else {
-            Toast.makeText(requireContext(),
-                "Please insert image before add food menu!", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 
@@ -197,13 +250,10 @@ class AdminFoodDetailFragment: Fragment() {
                     ) {
                         showRationalDialogForPermission()
                     }
-
-
                 }).onSameThread().check()
 
             mDialog.dismiss()
         }
-
         mDialog.show()
     }
 
@@ -242,7 +292,7 @@ class AdminFoodDetailFragment: Fragment() {
         val binding: DialogCustomListBinding = DialogCustomListBinding.inflate(layoutInflater)
         mDialog.setContentView(binding.root)
 
-        // Set title
+        // Set dialog title
         binding.dialogFoodTitle.text = title
 
         binding.dialogFoodRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -261,6 +311,7 @@ class AdminFoodDetailFragment: Fragment() {
         })
     }
 
+    // Back to previous layout
     private fun backward() {
         Utils().backward(this, R.id.adminFoodItemListFragment)
     }

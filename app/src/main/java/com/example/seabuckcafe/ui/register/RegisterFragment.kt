@@ -8,11 +8,9 @@ import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentRegisterBinding
 import com.example.seabuckcafe.firestore.Firestore
-import com.example.seabuckcafe.models.RegisterViewModel
 import com.example.seabuckcafe.models.User
 import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.textfield.TextInputLayout
@@ -22,7 +20,6 @@ import com.google.firebase.auth.FirebaseUser
 class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
-    private val viewModel: RegisterViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(

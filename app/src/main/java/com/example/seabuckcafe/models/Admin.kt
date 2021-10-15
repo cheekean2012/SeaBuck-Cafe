@@ -1,6 +1,8 @@
 package com.example.seabuckcafe.models
 
-class Admin (
+import com.google.firebase.firestore.DocumentId
+
+data class Admin (
     val id: String = "",
     val userName: String = "",
     val about: String = "",
@@ -9,10 +11,11 @@ class Admin (
     val phoneNumber: Long = 0,
     val isUser: Boolean = false)
 
-class AdminMenuItem (
+data class AdminMenuItem(
+    @DocumentId var id: String? = null,
     var image: String = "",
     val title: String = "",
     val type: String = "",
-    val price: Number = 0,
+    val price: String = "",
     val description: String = "",
-    val available: Boolean )
+    val available: Boolean? = null)

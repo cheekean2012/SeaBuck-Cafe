@@ -35,7 +35,7 @@ class UserAddressAdapter(
 
             // Create popup menu layout
             val popupMenus = PopupMenu(context.applicationContext, view)
-            popupMenus.inflate(R.menu.user_address_menu)
+            popupMenus.inflate(R.menu.edit_menu)
 
             // Set drawable icon if SDK greater than 30
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

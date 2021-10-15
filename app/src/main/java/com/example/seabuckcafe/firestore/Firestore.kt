@@ -17,8 +17,10 @@ import com.example.seabuckcafe.utils.Constants
 import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storageMetadata
 
 class Firestore {
 
@@ -103,64 +105,146 @@ class Firestore {
             }
     }
 
-    fun uploadFoodImageToCloudStorage(activity: Fragment, imageUri: Uri?, foodItem: AdminMenuItem){
+    fun uploadFoodMenuItem(activity: Fragment, imageUri: Uri?, foodItem: AdminMenuItem) {
+
+        // Generate a document id
+        val document = mFirestore.collection(Constants.MENUS).document()
+
+        // Set image path file
         val storageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.FOOD_IMAGE + System.currentTimeMillis() + "."
-                    + Constants.getFileExtension(
-                activity,
-                imageUri
-            )
+            "menus/" + document.id  + "menu.jpg"
         )
 
-        storageReference.putFile(imageUri!!).addOnSuccessListener { result ->
+        // Set image mime type
+        val metadata = storageMetadata {
+            contentType = "image/jpeg"
+        }
+
+        storageReference.putFile(imageUri!!, metadata).addOnSuccessListener { result ->
             Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
 
             result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
                 Log.d("Downloadable image URL ", uri.toString())
                 foodItem.image = uri.toString()
-                addFoodMenuItem(activity, foodItem)
+
+                mFirestore.collection(Constants.MENUS).document(document.id)
+                    .set(foodItem, SetOptions.merge())
+                    .addOnSuccessListener {
+                        Toast.makeText(activity.requireContext(), "Added successful!", Toast.LENGTH_SHORT).show()
+                        Utils().backward(activity, R.id.adminFoodItemListFragment)
+                    }
             }
         }
     }
 
-    private fun addFoodMenuItem(activity: Fragment, menu: AdminMenuItem ) {
+    fun getFoodMenuItem(activity: Fragment,
+                        recyclerView: RecyclerView) {
 
         mFirestore.collection(Constants.MENUS)
-            .add(menu)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                Toast.makeText(activity.requireContext(), "Item has been added!", Toast.LENGTH_SHORT).show()
-                Utils().backward(activity, R.id.adminFoodItemListFragment)
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-    }
-
-    fun getFoodMenuItem(activity: Fragment, foodItem: ArrayList<AdminMenuItem>, recyclerView: RecyclerView) {
-
-        mFirestore.collection(Constants.MENUS)
+            .orderBy("title", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                    foodItem.add(
-                        AdminMenuItem(
-                        document.data["image"].toString(),
-                        document.data["title"].toString(),
-                        document.data["type"].toString(),
-                        document.data["price"].toString().toLong(),
-                        document.data["description"].toString(),
-                        document.data["available"].toString().toBoolean())
-                    )
-                }
-                recyclerView.adapter = AdminFoodListItemAdapter(activity.requireContext(), foodItem)
+
+                /**
+                Custom object to return the data field of the document in QuerySnapShot
+                Adapter's MutableList can works in MutableList and ArrayList
+                But if Adapter is ArrayList, it doesn't works MutableList
+                 */
+                val foodItem = result.toObjects(AdminMenuItem::class.java) as ArrayList<AdminMenuItem>
+
+                recyclerView.adapter = AdminFoodListItemAdapter(activity, activity.requireContext(), foodItem)
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Error getting documents: ", exception)
             }
     }
 
+    fun updateFoodMenuItem(activity: Fragment, imageUri: Uri?, foodItem: AdminMenuItem) {
+
+        // If the admin didn't change picture, it will only update others information and save same picture
+        if (imageUri == null) {
+            mFirestore.collection(Constants.MENUS)
+                .document(foodItem.id!!)
+                .update(mapOf(
+                    "image" to foodItem.image,
+                    "title" to foodItem.title,
+                    "type" to foodItem.type,
+                    "price" to foodItem.price,
+                    "description" to foodItem.description,
+                    "available" to foodItem.available
+                )).addOnSuccessListener {
+                    Toast.makeText(activity.requireContext(), "Updated successful!", Toast.LENGTH_SHORT).show()
+                    Utils().backward(activity, R.id.adminFoodItemListFragment)
+                }
+        } else {
+            // Set image path file
+            val storageReference = FirebaseStorage.getInstance().reference.child(
+                "menus/" + foodItem.id  + "menu.jpg"
+            )
+            // Set image mime type
+            val metadata = storageMetadata {
+                contentType = "image/jpeg"
+            }
+            // Upload picture to storage
+            storageReference.putFile(imageUri, metadata).addOnSuccessListener { result ->
+                Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
+
+                result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                    Log.d("Downloadable image URL ", uri.toString())
+                    // Updated all information
+                    mFirestore.collection(Constants.MENUS)
+                        .document(foodItem.id!!)
+                        .update(mapOf(
+                            "image" to uri.toString(),
+                            "title" to foodItem.title,
+                            "type" to foodItem.type,
+                            "price" to foodItem.price,
+                            "description" to foodItem.description,
+                            "available" to foodItem.available
+                        )).addOnSuccessListener {
+                            Toast.makeText(activity.requireContext(), "Updated successful!", Toast.LENGTH_SHORT).show()
+                            Utils().backward(activity, R.id.adminFoodItemListFragment)
+                        }
+                }
+            }
+        }
+    }
+
+    fun deleteFoodMenuItem(activity: Fragment, id: String) {
+        // Delete picture in storage
+        FirebaseStorage.getInstance().reference.child(
+            "menus/"+ id + "menu.jpg"
+        ).delete()
+        // Delete menu item
+        mFirestore.collection(Constants.MENUS).document(id.toString())
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(activity.requireContext(), "Item has been deleted", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    fun filterFoodMenuItemType(
+        activity: Fragment,
+        foodType: String,
+        recyclerView: RecyclerView
+    ) {
+
+        mFirestore.collection(Constants.MENUS)
+            .whereEqualTo("type", foodType)
+            .orderBy("title", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+
+                /**
+                 Custom object to return the data field of the document in QuerySnapShot
+                 Adapter's MutableList can works in MutableList and ArrayList
+                 But if Adapter is ArrayList, it doesn't works MutableList
+                 */
+                val foodItem = result.toObjects(AdminMenuItem::class.java)
+
+                recyclerView.adapter = AdminFoodListItemAdapter(activity, activity.requireContext(), foodItem)
+            }
+    }
 
     fun updateUserProfileData(activity: Fragment, userHashMap: HashMap<String, Any>) {
 
