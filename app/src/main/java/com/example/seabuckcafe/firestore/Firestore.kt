@@ -236,9 +236,9 @@ class Firestore {
             .addOnSuccessListener { result ->
 
                 /**
-                 Custom object to return the data field of the document in QuerySnapShot
-                 Adapter's MutableList can works in MutableList and ArrayList
-                 But if Adapter is ArrayList, it doesn't works MutableList
+                Custom object to return the data field of the document in QuerySnapShot
+                Adapter's MutableList can works in MutableList and ArrayList
+                But if Adapter is ArrayList, it doesn't works MutableList
                  */
                 val foodItem = result.toObjects(AdminMenuItem::class.java)
 
