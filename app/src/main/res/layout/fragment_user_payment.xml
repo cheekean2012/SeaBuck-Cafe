@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+   <ScrollView
+       android:fillViewport="true"
+       android:scrollbars="none"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           tools:context=".ui.user.UserAddressFragment"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+
+           <com.google.android.material.appbar.AppBarLayout
+               android:id="@+id/topAppBarLayout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:elevation="8dp"
+               android:fitsSystemWindows="true"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent">
+
+               <com.google.android.material.appbar.MaterialToolbar
+                   android:id="@+id/topAppBar"
+                   android:layout_width="match_parent"
+                   android:layout_height="?attr/actionBarSize"
+                   app:navigationIcon="@drawable/ic_arrow_back" />
+
+           </com.google.android.material.appbar.AppBarLayout>
+
+           <TextView
+               android:id="@+id/currentAddress"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/current_address"
+               android:paddingVertical="12dp"
+               android:layout_margin="12dp"
+               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+               app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
+               app:layout_constraintStart_toStartOf="parent" />
+
+           <TextView
+               android:id="@+id/changeBtn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="16sp"
+               android:paddingVertical="12dp"
+               android:layout_margin="12dp"
+               android:text="@string/change"
+               android:textColor="@color/blue"
+               app:layout_constraintTop_toTopOf="@id/currentAddress"
+               app:layout_constraintBottom_toBottomOf="@id/currentAddress"
+               app:layout_constraintEnd_toEndOf="parent" />
+
+           <TextView
+               android:id="@+id/addressView"
+               android:layout_width="match_parent"
+               android:layout_height="100dp"
+               android:textColor="@color/white"
+               android:padding="8dp"
+               android:textSize="18sp"
+               android:scrollbars="vertical"
+               android:scrollbarStyle="insideOverlay"
+               android:background="@color/cardview_dark_background"
+               android:layout_marginHorizontal="12dp"
+               app:layout_constraintTop_toBottomOf="@id/currentAddress"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               tools:text="this is address"/>
+
+           <TextView
+               android:id="@+id/pickupType"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="12dp"
+               android:layout_marginHorizontal="12dp"
+               android:paddingVertical="8dp"
+               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+               android:text="@string/self_pickup_delivery"
+               app:layout_constraintTop_toBottomOf="@id/addressView"
+               app:layout_constraintStart_toStartOf="parent" />
+
+           <RadioGroup
+               android:id="@+id/pickupGroup"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="12dp"
+               android:orientation="horizontal"
+               app:layout_constraintTop_toBottomOf="@id/pickupType"
+               app:layout_constraintStart_toStartOf="parent">
+
+               <com.google.android.material.radiobutton.MaterialRadioButton
+                   android:id="@+id/selfPickupBtn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="8dp"
+                   android:textSize="16sp"
+                   android:text="@string/self_pickup" />
+
+               <com.google.android.material.radiobutton.MaterialRadioButton
+                   android:id="@+id/deliveryBtn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="8dp"
+                   android:textSize="16sp"
+                   android:text="@string/delivery" />
+           </RadioGroup>
+
+           <TextView
+               android:id="@+id/paymentType"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/payment_method"
+               android:paddingVertical="8dp"
+               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+               android:layout_marginTop="12dp"
+               android:layout_marginHorizontal="12dp"
+               app:layout_constraintTop_toBottomOf="@id/pickupGroup"
+               app:layout_constraintStart_toStartOf="parent" />
+
+           <RadioGroup
+               android:id="@+id/paymentGroup"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="12dp"
+               android:orientation="horizontal"
+               app:layout_constraintBottom_toTopOf="@id/confirmPayment"
+               app:layout_constraintTop_toBottomOf="@id/paymentType"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintVertical_bias="0">
+
+               <com.google.android.material.radiobutton.MaterialRadioButton
+                   android:id="@+id/cashBtn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="8dp"
+                   android:textSize="16sp"
+                   android:text="@string/cash" />
+
+               <com.google.android.material.radiobutton.MaterialRadioButton
+                   android:id="@+id/cardBtn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="8dp"
+                   android:textSize="16sp"
+                   android:text="@string/card" />
+           </RadioGroup>
+
+           <TextView
+               android:id="@+id/cardNumber"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="12dp"
+               android:layout_marginTop="12dp"
+               android:visibility="invisible"
+               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+               android:text="@string/card_number"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@id/paymentGroup" />
+
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/cardNumberLayout"
+               android:layout_width="250dp"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="12dp"
+               android:visibility="invisible"
+               android:hint="@string/your_card_number"
+               app:layout_constraintBottom_toTopOf="@id/confirmPayment"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@id/cardNumber"
+               app:layout_constraintVertical_bias="0">
+
+               <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/cardNumberEditText"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:inputType="numberPassword"/>
+
+           </com.google.android.material.textfield.TextInputLayout>
+
+
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/confirmPayment"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+               android:elevation="8dp"
+               android:layout_marginTop="24dp"
+               android:layout_marginBottom="12dp"
+               android:padding="16dp"
+               android:text="@string/confirm_payment"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintVertical_bias="1" />
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+   </ScrollView>
+</layout>

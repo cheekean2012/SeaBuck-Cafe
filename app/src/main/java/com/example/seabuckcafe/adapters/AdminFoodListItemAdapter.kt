@@ -29,18 +29,14 @@ class AdminFoodListItemAdapter(
     private val shareViewModel: MenuSharedViewModel by activity.activityViewModels()
 
     inner class FoodListViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.foodImageInAdminMenu)
-        val foodTitle: TextView = view.findViewById(R.id.foodTitleInAdminMenu)
-        val foodPrice: TextView = view.findViewById(R.id.foodPriceInAdminMenu)
+        val imageView: ImageView = view.findViewById(R.id.foodImageInUserAdminMenu)
+        val foodTitle: TextView = view.findViewById(R.id.foodTitleInUserAdminMenu)
+        val foodPrice: TextView = view.findViewById(R.id.foodPriceInUserAdminMenu)
         private var card: MaterialCardView = view.findViewById(R.id.card)
 
         init {
             card.setOnClickListener { popupMenus(it) }
 
-            itemView.setOnClickListener {
-                val data = foodItemList[adapterPosition]
-                //listener.onItemClick(data)
-            }
         }
 
         private fun popupMenus(view: View) {
@@ -103,7 +99,7 @@ class AdminFoodListItemAdapter(
 
         // Set price format
         val priceFormat = NumberFormat.getNumberInstance().format(item.price.toDouble())
-        holder.foodPrice.text = context.getString(R.string.rm, priceFormat)
+        holder.foodPrice.text = context.getString(R.string.rm, priceFormat.toDouble())
     }
 
     override fun getItemCount(): Int {

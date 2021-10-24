@@ -17,11 +17,19 @@ data class UserMenuItem (
     var image: String = "",
     val title: String = "",
     val type: String = "",
-    val price: Number = 0,
+    val price: String = "",
     val description: String = "",
     val available: Boolean? = null)
 
 
+data class ProductItem (
+    var id: String = "",
+    var image: String = "",
+    var itemName: String = "",
+    var quantity: Number = 0,
+    var price: String = "")
+
 data class UserAddressData (
-    var address: String
+    @DocumentId var id: String? = null,
+    var address: String = ""
 )

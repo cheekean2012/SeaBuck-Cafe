@@ -8,7 +8,10 @@ object Constants {
     const val USERS: String = "users"
     const val ADMIN: String = "admin"
     const val MENUS: String = "menus"
+    const val ADDRESS: String = "addresses"
     const val FOOD_IMAGE: String = "food_image"
+    const val QUANTITY_INCREASE: Int = 1
+    const val QUANTITY_DECREASE: Int = 1
 
     fun foodType(): List<String>{
         return listOf(
@@ -18,7 +21,8 @@ object Constants {
             ("Snacks"),
             ("Drinks"),
             ("Dessert"),
-            ("Others")
+            ("Others"),
+            ("Side Dishes")
         )
     }
 

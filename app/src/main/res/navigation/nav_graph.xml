@@ -69,18 +69,15 @@
     </fragment>
     <fragment
         android:id="@+id/foodItemListFragment"
-        android:name="com.example.seabuckcafe.ui.user.FoodItemListFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserFoodItemListFragment"
         android:label=""
         tools:layout="@layout/fragment_user_food_item_list">
         <action
-            android:id="@+id/action_userFoodItemListFragment_to_userFoodDetailFragment"
-            app:destination="@id/userfoodDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/userfoodDetailFragment"
-        android:name="com.example.seabuckcafe.ui.user.UserFoodDetailFragment"
-        android:label=""
-        tools:layout="@layout/fragment_user_food_detail">
+            android:id="@+id/action_foodItemListFragment_to_userFoodItemDetailFragment"
+            app:destination="@id/userFoodItemDetailFragment" />
+        <action
+            android:id="@+id/action_foodItemListFragment_to_userCartItemListFragment"
+            app:destination="@id/userCartItemListFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -127,4 +124,23 @@
             android:id="@+id/action_adminFoodItemListFragment_to_adminFoodDetailFragment"
             app:destination="@id/adminFoodDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userFoodItemDetailFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserFoodDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_food_in_detail"/>
+    <fragment
+        android:id="@+id/userCartItemListFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserCartItemListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_cart_item_list">
+        <action
+            android:id="@+id/action_userCartItemListFragment_to_userPaymentFragment"
+            app:destination="@id/userPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userPaymentFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserPaymentFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_payment"/>
 </navigation>

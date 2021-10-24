@@ -12,55 +12,393 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:openDrawer="start">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".ui.home.HomeUserFragment">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/topAppBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="4dp"
-                android:fitsSystemWindows="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:menu="@menu/user_menu" />
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <TextView
-                android:id="@+id/typeOfFood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/typeOfFood"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topAppBarLayout" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp"
-                android:scrollbars="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/typeOfFood" />
+                android:orientation="vertical"
+                tools:context=".ui.home.HomeUserFragment">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/topAppBarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:fitsSystemWindows="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/topAppBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:paddingEnd="5dp"
+                        app:menu="@menu/user_menu" />
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+                <TextView
+                    android:id="@+id/typeOfFood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/typeOfFood"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/topAppBarLayout" />
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:columnCount="2"
+
+                    android:scrollbars="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/typeOfFood"
+                    tools:layout_editor_absoluteX="12dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/breakfast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        app:cardElevation="0dp"
+                        android:layout_marginTop="16dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/breakfast)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgBreakfast"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/sandwich"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/breakfast"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgBreakfast" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/lunch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/lunch)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgLunch"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/lunch"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/lunch"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgLunch" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/dinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/dinner)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgDinner"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/dinner"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/dinner"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgDinner" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/snack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/snacks)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgSnack"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/snack"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/snacks"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgSnack" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/drink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/drinks)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgDrink"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/drink"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/drinks"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgDrink" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/sideDishes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/side_dishes)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgSideDishes"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/side_dish"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/side_dishes"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgSideDishes" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/dessert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/dessert)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgDessert"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/dessert"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/dessert"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgDessert" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/other"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/others)}"
+                        app:cardBackgroundColor="@color/transparentColor">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgBun"
+                                android:layout_width="150dp"
+                                android:layout_height="150dp"
+                                android:src="@drawable/bun"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_rowWeight="1"
+                                android:layout_columnWeight="1"
+                                android:padding="12dp"
+                                android:text="@string/others"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgBun" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                </GridLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navView"

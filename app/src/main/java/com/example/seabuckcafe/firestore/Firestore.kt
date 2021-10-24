@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.adapters.AdminFoodListItemAdapter
-import com.example.seabuckcafe.models.Admin
-import com.example.seabuckcafe.models.AdminMenuItem
-import com.example.seabuckcafe.models.User
+import com.example.seabuckcafe.adapters.UserAddressAdapter
+import com.example.seabuckcafe.adapters.UserFoodListItemAdapter
+import com.example.seabuckcafe.models.*
 import com.example.seabuckcafe.ui.login.LoginFragment
 import com.example.seabuckcafe.ui.register.RegisterFragment
 import com.example.seabuckcafe.utils.Constants
@@ -216,7 +216,7 @@ class Firestore {
             "menus/"+ id + "menu.jpg"
         ).delete()
         // Delete menu item
-        mFirestore.collection(Constants.MENUS).document(id.toString())
+        mFirestore.collection(Constants.MENUS).document(id)
             .delete()
             .addOnSuccessListener {
                 Toast.makeText(activity.requireContext(), "Item has been deleted", Toast.LENGTH_SHORT).show()
@@ -246,6 +246,63 @@ class Firestore {
             }
     }
 
+    fun userGetFoodMenuItem(activity: Fragment, type:String, recyclerView: RecyclerView) {
+        mFirestore.collection(Constants.MENUS)
+            .whereEqualTo("type", type)
+            .whereEqualTo("available", true)
+            .orderBy("title", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+
+                val foodItem = result.toObjects(UserMenuItem::class.java)
+
+                recyclerView.adapter = UserFoodListItemAdapter(activity, activity.requireContext(), foodItem)
+            }
+    }
+
+    fun addUserAddress(activity: Fragment, address: UserAddressData, uid: String) {
+        mFirestore.collection(Constants.ADDRESS)
+            .document(uid)
+            .collection(Constants.ADDRESS)
+            .document()
+            .set(address, SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(activity.requireContext(), "Added successful!", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    fun getUserAddress(
+        activity: Fragment,
+        userID: String,
+        recyclerView: RecyclerView, userAddress: MutableList<UserAddressData>) {
+        mFirestore.collection(Constants.ADDRESS)
+            .document(userID)
+            .collection(Constants.ADDRESS)
+            .get()
+            .addOnSuccessListener { result ->
+
+                for (document in result) {
+                    userAddress.add(document.toObject(UserAddressData::class.java))
+                }
+
+                recyclerView.adapter = UserAddressAdapter(activity, activity.requireContext(), userAddress)
+            }
+    }
+
+    fun deleteUserAddress(activity: Fragment, documentId: String) {
+        val auth = FirebaseAuth.getInstance()
+
+        mFirestore.collection(Constants.ADDRESS)
+            .document(auth.uid!!)
+            .collection(Constants.ADDRESS)
+            .document(documentId)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(activity.requireContext(), "Deleted Successful!", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
     fun updateUserProfileData(activity: Fragment, userHashMap: HashMap<String, Any>) {
 
         mFirestore.collection(Constants.USERS)
@@ -259,3 +316,4 @@ class Firestore {
             }
     }
 }
+

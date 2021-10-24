@@ -72,7 +72,7 @@
     <string name="food_description">Food Description</string>
     <string name="select_food_type">Select Food Type</string>
     <string name="available">Available</string>
-    <string name="rm">RM%s</string>
+    <string name="rm">RM%1$.2f</string>
 
     <string name="foodType1">breakfast</string>
     <string name="foodType2">lunch</string>
@@ -81,4 +81,29 @@
     <string name="foodType5">drink</string>
     <string name="foodType6">others</string>
     <string name="food_image">food image</string>
+
+    <!--Strings related to user menu-->
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="snacks">Snacks</string>
+    <string name="drinks">Drinks</string>
+    <string name="side_dishes">Side Dishes</string>
+    <string name="dessert">Dessert</string>
+    <string name="others">Others</string>
+    <string name="subtotal">SubTotal</string>
+    <string name="continueBtn">Continue</string>
+
+    <!--Strings related to user payment-->
+    <string name="change">Change</string>
+    <string name="self_pickup_delivery">Self pickup / Delivery</string>
+    <string name="self_pickup">Self-Pickup</string>
+    <string name="delivery">Delivery</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="cash">Cash</string>
+    <string name="card">Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="your_card_number">Your Card Number</string>
+    <string name="confirm_payment">Confirm Payment</string>
+
 </resources>

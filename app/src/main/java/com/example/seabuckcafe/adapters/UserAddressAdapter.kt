@@ -2,6 +2,7 @@ package com.example.seabuckcafe.adapters
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +10,24 @@ import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
+import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserAddressData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
 class UserAddressAdapter(
+    private val activity: Fragment,
     private val context: Context,
-    private val userAddressList: ArrayList<UserAddressData>): RecyclerView.Adapter<UserAddressAdapter.UserAddressViewHolder>() {
+    private val userAddressList: MutableList<UserAddressData>): RecyclerView.Adapter<UserAddressAdapter.UserAddressViewHolder>() {
 
     inner class UserAddressViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         var userAddress: TextView = view.findViewById(R.id.addressSubTitle)
         private var mMenus: Button = view.findViewById(R.id.buttonMore)
 
         init {
-            // lambda expression "it" parameter from view: View parameter
             mMenus.setOnClickListener { popupMenus(it) }
         }
 
@@ -32,6 +35,8 @@ class UserAddressAdapter(
 
             // Get current adapter position when user clicked menu in recycler view layout
             val position = userAddressList[adapterPosition]
+
+            Log.d("get position address id", "${position.id} \n ${position.address}")
 
             // Create popup menu layout
             val popupMenus = PopupMenu(context.applicationContext, view)
@@ -88,8 +93,8 @@ class UserAddressAdapter(
                                 // Remove data from specify position
                                 userAddressList.removeAt(adapterPosition)
                                 // After remove and display
-                                notifyDataSetChanged()
-                                Toast.makeText(context, "Deleted Successful!", Toast.LENGTH_SHORT).show()
+                                notifyItemRemoved(adapterPosition)
+                                Firestore().deleteUserAddress(activity, position.id!!)
                                 dialog.dismiss()
                             }
                             .setNegativeButton("No") {

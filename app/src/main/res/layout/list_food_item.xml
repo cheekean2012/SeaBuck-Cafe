@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginVertical="8dp"
         android:layout_marginHorizontal="4dp"
@@ -26,7 +25,7 @@
                 android:layout_margin="12dp">
 
                 <ImageView
-                    android:id="@+id/foodImageInAdminMenu"
+                    android:id="@+id/foodImageInUserAdminMenu"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
@@ -37,12 +36,12 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/foodTitleInAdminMenu"
+                    android:id="@+id/foodTitleInUserAdminMenu"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    app:layout_constraintTop_toBottomOf="@id/foodImageInAdminMenu"
+                    app:layout_constraintTop_toBottomOf="@id/foodImageInUserAdminMenu"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="Food Title" />
 
@@ -50,7 +49,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/foodPriceInAdminMenu"
+                android:id="@+id/foodPriceInUserAdminMenu"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
