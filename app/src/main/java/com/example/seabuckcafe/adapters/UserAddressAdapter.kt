@@ -9,19 +9,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.firestore.Firestore
-import com.example.seabuckcafe.models.UserAddressData
+import com.example.seabuckcafe.models.UserAddressList
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 
 class UserAddressAdapter(
     private val activity: Fragment,
     private val context: Context,
-    private val userAddressList: MutableList<UserAddressData>): RecyclerView.Adapter<UserAddressAdapter.UserAddressViewHolder>() {
+    private val userAddressList: MutableList<UserAddressList>): RecyclerView.Adapter<UserAddressAdapter.UserAddressViewHolder>() {
 
     inner class UserAddressViewHolder(val view: View): RecyclerView.ViewHolder(view) {
         var userAddress: TextView = view.findViewById(R.id.addressSubTitle)
@@ -53,7 +52,7 @@ class UserAddressAdapter(
                 when (it.itemId) {
                     R.id.editText -> {
                         // Get and reuse add address item layout
-                        val inflater = LayoutInflater.from(context).inflate(R.layout.dialog_add_address_item, null)
+                        val inflater = LayoutInflater.from(context).inflate(R.layout.dialog_address_item, null)
                         // Change add new address to edit address
                         inflater.findViewById<TextView>(R.id.addressTitle).setText(R.string.edit_address)
 
@@ -65,11 +64,13 @@ class UserAddressAdapter(
                             .setView(inflater)
                             .setPositiveButton("Save") {
                                 dialog, _ ->
-                                position.address = "Address: " + newAddress.text.toString()
+                                position.address = newAddress.text.toString()
+
+                                Log.d("get position","${position.id}")
 
                                 // Specify the item when data has been changed and display
                                 notifyItemChanged(adapterPosition)
-                                Toast.makeText(context,"Edited Successful!", Toast.LENGTH_SHORT).show()
+                                Firestore().updateUserAddress(activity, position.id, newAddress.text.toString())
                                 dialog.dismiss()
                             }
                             .setNegativeButton("Cancel") {
@@ -124,7 +125,7 @@ class UserAddressAdapter(
 
     override fun onBindViewHolder(holder: UserAddressViewHolder, position: Int) {
         val item = userAddressList[position]
-        holder.userAddress.text = item.address
+        holder.userAddress.text = context.getString(R.string.address_in_adapter, item.address)
     }
 
     override fun getItemCount(): Int {

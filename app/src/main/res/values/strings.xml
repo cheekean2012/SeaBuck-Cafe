@@ -54,6 +54,7 @@
     <string name="add_new">Add New</string>
     <string name="new_address">New Address</string>
     <string name="edit_address">Edit Address</string>
+    <string name="address_in_adapter">Address: %s</string>
 
     <!--Strings related to AppBar with Navigation Drawer-->
     <string name="open">Open</string>
@@ -105,5 +106,7 @@
     <string name="card_number">Card Number</string>
     <string name="your_card_number">Your Card Number</string>
     <string name="confirm_payment">Confirm Payment</string>
+    <string name="cvc">CVC</string>
+    <string name="select_address">Select Address</string>
 
 </resources>

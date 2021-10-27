@@ -31,6 +31,8 @@
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/add_address_item.xml" value="0.264" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/cart_badge.xml" value="4.8" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/dialog_add_address_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/dialog_address_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/dialog_address_list.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/dialog_custom_list.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/dialog_image_selector.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_admin_food_detail.xml" value="0.264" />
@@ -49,12 +51,15 @@
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_food_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_food_in_detail.xml" value="0.25317028985507245" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_food_item_list.xml" value="0.264" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_order_list.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_payment.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/fragment_user_profile.xml" value="0.264" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/header_navigation_drawer.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_admin_food_item.xml" value="0.25" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_food_item.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_food_type_item.xml" value="0.4" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_order_item.xml" value="0.536" />
+        <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_user_address_in_payment.xml" value="0.25416666666666665" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_user_address_item.xml" value="0.264" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/layout/list_user_cart_item.xml" value="0.4" />
         <entry key="..\:/software/project/AndroidStudioProject/SeaBuckCafe/app/src/main/res/menu/backwards.xml" value="0.25416666666666665" />

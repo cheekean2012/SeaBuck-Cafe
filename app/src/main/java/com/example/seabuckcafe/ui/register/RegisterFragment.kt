@@ -92,7 +92,7 @@ class RegisterFragment : Fragment() {
                             firebaseUser.uid,
                             name,
                             email,
-                            binding.phoneNumberEditText.text.toString().toLong(),
+                            binding.phoneNumberEditText.text.toString(),
                             isUser = true)
 
                     Firestore().registerUser(this, userInfo)

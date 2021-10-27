@@ -11,7 +11,7 @@ import com.example.seabuckcafe.R
 import com.example.seabuckcafe.adapters.UserAddressAdapter
 import com.example.seabuckcafe.databinding.FragmentUserAddressBinding
 import com.example.seabuckcafe.firestore.Firestore
-import com.example.seabuckcafe.models.UserAddressData
+import com.example.seabuckcafe.models.UserAddressList
 import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 class UserAddressFragment : Fragment() {
 
     private lateinit var binding: FragmentUserAddressBinding
-    private lateinit var  userAddressList: MutableList<UserAddressData>
+    private lateinit var  userAddressList: MutableList<UserAddressList>
     private lateinit var recyclerView: RecyclerView
     private var auth = FirebaseAuth.getInstance()
 
@@ -54,7 +54,7 @@ class UserAddressFragment : Fragment() {
     private fun addInfo() {
         // Get add address item layout
         val inflater = LayoutInflater.from(requireContext())
-            .inflate(R.layout.dialog_add_address_item, null)
+            .inflate(R.layout.dialog_address_item, null)
 
         // Get edit text id
         val newAddress = inflater.findViewById<TextInputEditText>(R.id.newAddressEditText)
@@ -67,9 +67,9 @@ class UserAddressFragment : Fragment() {
                 val address = newAddress.text.toString()
 
                 // Add data into useAddressList
-                userAddressList.add(UserAddressData("", address))
+                userAddressList.add(UserAddressList("", address))
 
-                val userAddress = UserAddressData(
+                val userAddress = UserAddressList(
                     "",
                     address
                 )

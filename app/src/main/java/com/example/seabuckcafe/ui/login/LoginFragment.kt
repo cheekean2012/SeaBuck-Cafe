@@ -17,11 +17,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentLoginBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.Admin
+import com.example.seabuckcafe.models.PersonalInfoViewModel
 import com.example.seabuckcafe.models.User
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+    private val personalInfoViewModel: PersonalInfoViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -169,8 +172,12 @@ class LoginFragment : Fragment() {
 
         Log.d("Full Name", user.userName)
         Log.d("Email Address", user.email)
-        Log.d("Phone Number", user.phoneNumber.toString())
+        Log.d("Phone Number", user.phoneNumber)
         Log.d("isUser ", user.isUser.toString())
+
+        personalInfoViewModel.setName(user.userName)
+        personalInfoViewModel.setEmail(user.email)
+        personalInfoViewModel.setPhoneNumber(user.phoneNumber)
 
         Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeUserFragment)
@@ -180,8 +187,12 @@ class LoginFragment : Fragment() {
 
         Log.d("Full Name", admin.userName)
         Log.d("Email Address", admin.email)
-        Log.d("Phone Number", admin.phoneNumber.toString())
+        Log.d("Phone Number", admin.phoneNumber)
         Log.d("isUser ", admin.isUser.toString())
+
+        personalInfoViewModel.setName(admin.userName)
+        personalInfoViewModel.setEmail(admin.email)
+        personalInfoViewModel.setPhoneNumber(admin.phoneNumber)
 
         Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeAdminFragment)

@@ -51,6 +51,12 @@
         <action
             android:id="@+id/action_homeUserFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_userCartItemListFragment"
+            app:destination="@id/userCartItemListFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_userOrderListFragment"
+            app:destination="@id/userOrderListFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeAdminFragment"
@@ -75,9 +81,6 @@
         <action
             android:id="@+id/action_foodItemListFragment_to_userFoodItemDetailFragment"
             app:destination="@id/userFoodItemDetailFragment" />
-        <action
-            android:id="@+id/action_foodItemListFragment_to_userCartItemListFragment"
-            app:destination="@id/userCartItemListFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -143,4 +146,9 @@
         android:name="com.example.seabuckcafe.ui.user.UserPaymentFragment"
         android:label=""
         tools:layout="@layout/fragment_user_payment"/>
+    <fragment
+        android:id="@+id/userOrderListFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserOrderListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_order_list"/>
 </navigation>

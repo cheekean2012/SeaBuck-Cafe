@@ -63,6 +63,6 @@ class UserCartItemListFragment: Fragment() {
     }
 
     private fun backward() {
-        Utils().backward(this, R.id.foodItemListFragment)
+        Utils().backward(this, R.id.homeUserFragment)
     }
 }

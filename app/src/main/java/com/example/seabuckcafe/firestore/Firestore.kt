@@ -7,12 +7,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
-import com.example.seabuckcafe.adapters.AdminFoodListItemAdapter
-import com.example.seabuckcafe.adapters.UserAddressAdapter
-import com.example.seabuckcafe.adapters.UserFoodListItemAdapter
+import com.example.seabuckcafe.adapters.*
 import com.example.seabuckcafe.models.*
 import com.example.seabuckcafe.ui.login.LoginFragment
 import com.example.seabuckcafe.ui.register.RegisterFragment
+import com.example.seabuckcafe.ui.user.UserAddressFragment
+import com.example.seabuckcafe.ui.user.UserPaymentFragment
 import com.example.seabuckcafe.utils.Constants
 import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
@@ -260,10 +260,10 @@ class Firestore {
             }
     }
 
-    fun addUserAddress(activity: Fragment, address: UserAddressData, uid: String) {
+    fun addUserAddress(activity: Fragment, address: UserAddressList, uid: String) {
         mFirestore.collection(Constants.ADDRESS)
             .document(uid)
-            .collection(Constants.ADDRESS)
+            .collection(Constants.USER_ADDRESS)
             .document()
             .set(address, SetOptions.merge())
             .addOnSuccessListener {
@@ -274,18 +274,61 @@ class Firestore {
     fun getUserAddress(
         activity: Fragment,
         userID: String,
-        recyclerView: RecyclerView, userAddress: MutableList<UserAddressData>) {
+        recyclerView: RecyclerView,
+        userAddress: MutableList<UserAddressList>) {
         mFirestore.collection(Constants.ADDRESS)
             .document(userID)
-            .collection(Constants.ADDRESS)
+            .collection(Constants.USER_ADDRESS)
             .get()
             .addOnSuccessListener { result ->
 
                 for (document in result) {
-                    userAddress.add(document.toObject(UserAddressData::class.java))
+                    userAddress.add(document.toObject(UserAddressList::class.java))
                 }
 
-                recyclerView.adapter = UserAddressAdapter(activity, activity.requireContext(), userAddress)
+                when (activity) {
+                    is UserPaymentFragment -> {
+                        recyclerView.adapter = UserPaymentAddressListAdapter(activity, activity.requireContext(), userAddress)
+                        activity.selectAddress(recyclerView.adapter as UserPaymentAddressListAdapter)
+                    }
+                     is UserAddressFragment -> {
+                        recyclerView.adapter = UserAddressAdapter(activity, activity.requireContext(), userAddress)
+                    }
+
+                }
+            }
+    }
+
+    fun updateUserAddress(activity: Fragment, id: String?, newAddress: String) {
+        val auth = FirebaseAuth.getInstance()
+
+        if (id != null) {
+            mFirestore.collection(Constants.ADDRESS)
+                .document(auth.uid!!)
+                .collection(Constants.USER_ADDRESS)
+                .document(id)
+                .update(mapOf(
+                    "address" to newAddress
+                )).addOnSuccessListener {
+                    Toast.makeText(activity.requireContext(),"Edited Successful!", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    fun getOneUserAddress(activity: Fragment, userID: String) {
+        mFirestore.collection(Constants.ADDRESS)
+            .document(userID)
+            .collection(Constants.USER_ADDRESS)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                val address = result.toObjects(UserAddressList::class.java)
+
+                when (activity) {
+                    is UserPaymentFragment -> {
+                        activity.setAddress(address)
+                    }
+                }
             }
     }
 
@@ -294,13 +337,39 @@ class Firestore {
 
         mFirestore.collection(Constants.ADDRESS)
             .document(auth.uid!!)
-            .collection(Constants.ADDRESS)
+            .collection(Constants.USER_ADDRESS)
             .document(documentId)
             .delete()
             .addOnSuccessListener {
                 Toast.makeText(activity.requireContext(), "Deleted Successful!", Toast.LENGTH_SHORT).show()
             }
 
+    }
+
+    fun addUserOrderList(activity: Fragment, orderList: UserOrderList, userId: String) {
+        mFirestore.collection(Constants.ORDERS)
+            .document(userId)
+            .collection(Constants.USER_ORDERS)
+            .document()
+            .set(orderList, SetOptions.merge())
+    }
+
+    fun getUserOrderList(
+        activity: Fragment,
+        userID: String,
+        recyclerView: RecyclerView,
+        orderList: ArrayList<UserOrderList>
+    ) {
+        mFirestore.collection(Constants.ORDERS)
+            .document(userID)
+            .collection(Constants.USER_ORDERS)
+            .get()
+            .addOnSuccessListener { result ->
+
+                val orderItem = result.toObjects(UserOrderList::class.java)
+
+                recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+            }
     }
 
     fun updateUserProfileData(activity: Fragment, userHashMap: HashMap<String, Any>) {

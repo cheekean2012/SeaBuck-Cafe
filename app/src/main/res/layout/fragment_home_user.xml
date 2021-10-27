@@ -28,7 +28,7 @@
                     android:id="@+id/topAppBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="4dp"
+                    android:elevation="8dp"
                     android:fitsSystemWindows="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +37,35 @@
                     <com.google.android.material.appbar.MaterialToolbar
                         android:id="@+id/topAppBar"
                         android:layout_width="match_parent"
+                        android:elevation="0dp"
+                        app:tint="?attr/colorOnSurface"
+                        app:elevation="0dp"
+                        app:backgroundTint="@color/transparentColor"
                         android:layout_height="?attr/actionBarSize"
-                        android:paddingEnd="5dp"
-                        app:menu="@menu/user_menu" />
+                        app:navigationIcon="@drawable/ic_arrow_back">
 
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <include
+                                android:id="@+id/visibleBadge"
+                                layout="@layout/cart_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="12dp"
+                                android:elevation="0dp"
+                                app:tint="?attr/colorOnSurface"
+                                app:elevation="0dp"
+                                app:backgroundTint="@color/transparentColor"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.appbar.MaterialToolbar>
                 </com.google.android.material.appbar.AppBarLayout>
 
 

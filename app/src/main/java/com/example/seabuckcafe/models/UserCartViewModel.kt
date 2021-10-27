@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 class UserCartViewModel: ViewModel() {
 
     private val _product = MutableLiveData<MutableList<ProductItem>>()
-    val product: LiveData<MutableList<ProductItem>> get() = _product
+    val product: MutableLiveData<MutableList<ProductItem>> get() = _product
 
     private val _quantity = MutableLiveData(0)
     val quantity: LiveData<Int> get() = _quantity
@@ -18,6 +18,12 @@ class UserCartViewModel: ViewModel() {
 
     private val _subTotal = MutableLiveData<Double>(0.00)
     val subTotal: LiveData<Double> get() = _subTotal
+
+    private val _pickType = MutableLiveData<String?>()
+    val pickType: MutableLiveData<String?> get() = _pickType
+
+    private val _paymentType = MutableLiveData<String?>()
+    val paymentType: MutableLiveData<String?> get() = _paymentType
 
     private var isAdd: Boolean = false
 
@@ -83,9 +89,26 @@ class UserCartViewModel: ViewModel() {
         isVisible()
     }
 
+    fun setPickupType(type: String) {
+        _pickType.value = type
+    }
+
+    fun setPaymentType(type: String) {
+        _paymentType.value = type
+    }
+
     private fun isVisible() {
         // Checked if quantity is not 0, then set to true
         _isQuantityZero.value = _quantity.value != 0
+    }
+
+    fun clearProduct() {
+        _product.value!!.clear()
+        _quantity.value = 0
+        _isQuantityZero.value = false
+        _paymentType.value = null
+        _pickType.value = null
+        _subTotal.value = 0.00
     }
 }
 

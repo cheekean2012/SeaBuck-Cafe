@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentHomeUserBinding
 import com.example.seabuckcafe.models.MenuSharedViewModel
+import com.example.seabuckcafe.models.UserCartViewModel
 import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,6 +21,7 @@ class HomeUserFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeUserBinding
     private val sharedViewModel: MenuSharedViewModel by activityViewModels()
+    private val cartViewModel: UserCartViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +46,11 @@ class HomeUserFragment: Fragment() {
             }
             // Set drawer layout navigation view
             navView.setNavigationItemSelectedListener{ navDrawerNavigation(it) }
-
+            visibleBadge.cartIcon.setOnClickListener { goToCart() }
         }
+
+        // Check notification on badge
+        badgeNotificationVisible()
     }
 
     private fun navDrawerNavigation(menuItem: MenuItem): Boolean {
@@ -56,6 +61,8 @@ class HomeUserFragment: Fragment() {
                 return true
             }
             R.id.order -> {
+                Utils().forward(this, R.id.action_homeUserFragment_to_userOrderListFragment)
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
                 return true
             }
             R.id.about_us -> {
@@ -74,6 +81,21 @@ class HomeUserFragment: Fragment() {
     fun forwardToListFoodItem(type : String) {
         sharedViewModel.setType(type)
         Utils().forward(this, R.id.action_homeUserFragment_to_foodItemListFragment)
+    }
+
+    private fun goToCart() {
+        Utils().forward(this, R.id.action_homeUserFragment_to_userCartItemListFragment)
+    }
+
+    // Set notification on badge and set item count when user clicked add to cart
+    private fun badgeNotificationVisible() {
+
+        if (cartViewModel.isQuantityZero.value != true) {
+            binding.visibleBadge.notificationNumberContainer.visibility = View.INVISIBLE
+        } else {
+            binding.visibleBadge.notificationNumberContainer.visibility = View.VISIBLE
+            binding.visibleBadge.numberCount.text = cartViewModel.quantity.value.toString()
+        }
     }
 
 }
