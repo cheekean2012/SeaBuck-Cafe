@@ -1,6 +1,7 @@
 package com.example.seabuckcafe.firestore
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.example.seabuckcafe.models.*
 import com.example.seabuckcafe.ui.login.LoginFragment
 import com.example.seabuckcafe.ui.register.RegisterFragment
 import com.example.seabuckcafe.ui.user.UserAddressFragment
+import com.example.seabuckcafe.ui.user.UserContactFragment
 import com.example.seabuckcafe.ui.user.UserPaymentFragment
 import com.example.seabuckcafe.utils.Constants
 import com.example.seabuckcafe.utils.Utils
@@ -357,12 +359,12 @@ class Firestore {
     fun getUserOrderList(
         activity: Fragment,
         userID: String,
-        recyclerView: RecyclerView,
-        orderList: ArrayList<UserOrderList>
+        recyclerView: RecyclerView
     ) {
         mFirestore.collection(Constants.ORDERS)
             .document(userID)
             .collection(Constants.USER_ORDERS)
+            .orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
 
@@ -372,17 +374,81 @@ class Firestore {
             }
     }
 
-    fun updateUserProfileData(activity: Fragment, userHashMap: HashMap<String, Any>) {
+    fun updateUserName(context: Context, name: String) {
 
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserID())
-            .update(userHashMap)
+            .update(mapOf(
+                "userName" to name
+            ))
             .addOnSuccessListener {
-
+                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error while updating the user details.", e)
             }
     }
+
+    fun updateUserPhoneNumber(context: Context, phoneNumber: String) {
+
+        mFirestore.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .update(mapOf(
+                "phoneNumber" to phoneNumber
+            ))
+            .addOnSuccessListener {
+                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error while updating the user details.", e)
+            }
+    }
+
+    fun updateUserProfilePicture(context: Context, imageUri: Uri?) {
+
+        val documentID = getCurrentUserID()
+
+        // Set image path file
+        val storageReference = FirebaseStorage.getInstance().reference.child(
+            "profile/$documentID.jpg"
+        )
+
+        // Set image mime type
+        val metadata = storageMetadata {
+            contentType = "image/jpeg"
+        }
+
+        storageReference.putFile(imageUri!!, metadata).addOnSuccessListener { result ->
+            Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
+
+            result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                Log.d("Downloadable image URL ", uri.toString())
+
+                mFirestore.collection(Constants.USERS)
+                    .document(documentID)
+                    .update(mapOf(
+                        "image" to uri.toString()
+                    ))
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "updated Successfully", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+    }
+
+    fun getAdminContactInfo(activity: Fragment) {
+        mFirestore.collection(Constants.ADMIN)
+            .get()
+            .addOnSuccessListener {document ->
+
+                val info = document.documents[0].data
+
+                when (activity) {
+                    is UserContactFragment -> activity.getCafeInfo(info)
+                }
+            }
+    }
+
+
 }
 

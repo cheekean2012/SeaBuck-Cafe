@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_homeUserFragment_to_userOrderListFragment"
             app:destination="@id/userOrderListFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_userAboutFragment"
+            app:destination="@id/userAboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeAdminFragment"
@@ -94,12 +97,18 @@
         <action
             android:id="@+id/action_userProfileFragment_to_userAddressFragment"
             app:destination="@id/userAddressFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userContactFragment"
+            app:destination="@id/userContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/userAccountFragment"
         android:name="com.example.seabuckcafe.ui.user.UserAccountFragment"
         android:label=""
         tools:layout="@layout/fragment_user_account">
+        <action
+            android:id="@+id/action_userAccountFragment_to_userAccountEditFragment"
+            app:destination="@id/userAccountEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/userAddressFragment"
@@ -150,5 +159,29 @@
         android:id="@+id/userOrderListFragment"
         android:name="com.example.seabuckcafe.ui.user.UserOrderListFragment"
         android:label=""
-        tools:layout="@layout/fragment_user_order_list"/>
+        tools:layout="@layout/fragment_user_order_list">
+        <action
+            android:id="@+id/action_userOrderListFragment_to_userOrderDetailFragment"
+            app:destination="@id/userOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userOrderDetailFragment"
+        android:name="com.example.seabuckcafe.ui.order.UserOrderDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_order_detail"/>
+    <fragment
+        android:id="@+id/userAccountEditFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserAccountEditFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_edit_account"/>
+    <fragment
+        android:id="@+id/userAboutFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserAboutFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_about"/>
+    <fragment
+        android:id="@+id/userContactFragment"
+        android:name="com.example.seabuckcafe.ui.user.UserContactFragment"
+        android:label=""
+        tools:layout="@layout/fragment_user_contact"/>
 </navigation>

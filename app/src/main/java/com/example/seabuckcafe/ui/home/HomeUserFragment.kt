@@ -66,6 +66,8 @@ class HomeUserFragment: Fragment() {
                 return true
             }
             R.id.about_us -> {
+                Utils().forward(this, R.id.action_homeUserFragment_to_userAboutFragment)
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
                 return true
             }
             R.id.logout -> {

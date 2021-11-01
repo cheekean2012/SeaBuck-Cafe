@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.ListOrderItemBinding
 import com.example.seabuckcafe.models.UserOrderList
 import com.example.seabuckcafe.models.UserOrderViewModel
+import com.example.seabuckcafe.utils.Utils
 
 class OrderListItemAdapter(
     private val activity: Fragment,
@@ -26,6 +28,24 @@ class OrderListItemAdapter(
         val foodName: TextView = view.foodNameInOrder
         val status: TextView = view.status
         val button: Button = view.forwardBtn
+
+        init {
+            button.setOnClickListener { forward() }
+        }
+
+        private fun forward() {
+            val position = orderList[adapterPosition]
+
+            orderViewModel.apply {
+                setOrderProduct(position.foodItem)
+                setPaymentType(position.paymentType)
+                setPickupType(position.pickupType)
+                setPhoneNumber(position.phoneNumber)
+                setTotalPrice(position.totalPrice)
+                setReason(position.reason)
+            }
+            Utils().forward(activity, R.id.action_userOrderListFragment_to_userOrderDetailFragment)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderListViewHolder {

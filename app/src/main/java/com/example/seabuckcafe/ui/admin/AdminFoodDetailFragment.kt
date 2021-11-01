@@ -59,7 +59,7 @@ class AdminFoodDetailFragment: Fragment() {
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
 
             val path: String = MediaStore.Images.Media.insertImage(
-                requireContext().getContentResolver(),
+                requireContext().contentResolver,
                 thumbnail,
                 "",
                 null
@@ -75,11 +75,14 @@ class AdminFoodDetailFragment: Fragment() {
 
     // Gallery setting for new API
     private var galleryLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
+        ActivityResultContracts.GetContent()
     ) {
-        if (it.resultCode == Activity.RESULT_OK) {
+
+        if (it != null) {
             // Get gallery image uri
-            mImageUri = it.data!!.data
+            mImageUri = it
+            Log.d("image Uri", it.toString())
+
             Glide.with(requireContext())
                 .load(mImageUri)
                 .into(binding.foodImage)
@@ -235,8 +238,7 @@ class AdminFoodDetailFragment: Fragment() {
                 ).withListener(object: PermissionListener {
                     // Permission granted
                     override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
-                        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                        galleryLauncher.launch(galleryIntent)
+                        galleryLauncher.launch("image/*")
                     }
                     // Permission denied
                     override fun onPermissionDenied(p0: PermissionDeniedResponse?) {

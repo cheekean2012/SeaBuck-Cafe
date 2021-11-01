@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.seabuckcafe.R
+import com.example.seabuckcafe.databinding.ListFoodItemBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.AdminMenuItem
 import com.example.seabuckcafe.models.MenuSharedViewModel
@@ -28,11 +29,11 @@ class AdminFoodListItemAdapter(
 
     private val shareViewModel: MenuSharedViewModel by activity.activityViewModels()
 
-    inner class FoodListViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.foodImageInUserAdminMenu)
-        val foodTitle: TextView = view.findViewById(R.id.foodTitleInUserAdminMenu)
-        val foodPrice: TextView = view.findViewById(R.id.foodPriceInUserAdminMenu)
-        private var card: MaterialCardView = view.findViewById(R.id.card)
+    inner class FoodListViewHolder(val view: ListFoodItemBinding): RecyclerView.ViewHolder(view.root) {
+        val imageView: ImageView = view.foodImageInUserAdminMenu
+        val foodTitle: TextView = view.foodTitleInUserAdminMenu
+        val foodPrice: TextView = view.foodPriceInUserAdminMenu
+        private var card: MaterialCardView = view.card
 
         init {
             card.setOnClickListener { popupMenus(it) }
@@ -83,9 +84,8 @@ class AdminFoodListItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
-        val foodListItemLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_food_item, parent, false)
-        return FoodListViewHolder(foodListItemLayout)
+        val binding: ListFoodItemBinding = ListFoodItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return FoodListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FoodListViewHolder, position: Int) {

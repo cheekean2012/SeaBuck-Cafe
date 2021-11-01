@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="UserProfileFragment"
             type="com.example.seabuckcafe.ui.user.UserProfileFragment" />
@@ -52,7 +51,8 @@
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:elevation="8dp"
-            android:src="@drawable/sound__euphonium_hibike_08_05"
+            app:civ_circle_background_color="@color/mediumGrey"
+            android:src="@drawable/ic_account"
             app:civ_border_color="?attr/civ_border_color"
             app:civ_border_width="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/backgroundContainer"
@@ -153,7 +153,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/addressForward"
+                android:id="@+id/passwordForward"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="36dp"
@@ -204,6 +204,7 @@
                 android:layout_marginEnd="36dp"
                 android:background="@drawable/ic_forward"
                 android:backgroundTint="@color/transparentColor"
+                android:onClick="@{() -> UserProfileFragment.goToContactUs()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

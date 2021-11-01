@@ -1,5 +1,6 @@
 package com.example.seabuckcafe.models
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,12 @@ class PersonalInfoViewModel: ViewModel() {
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> get() = _email
 
+    private val _forwardText = MutableLiveData<String>()
+    val forwardText: LiveData<String> get() = _forwardText
+
+    private val _image = MutableLiveData<Uri?>()
+    val image: LiveData<Uri?> get() = _image
+
     fun setName(name: String) {
         _name.value = name
     }
@@ -25,5 +32,13 @@ class PersonalInfoViewModel: ViewModel() {
 
     fun setEmail(email: String) {
         _email.value = email
+    }
+
+    fun setForwardText(text: String) {
+        _forwardText.value = text
+    }
+
+    fun setProfileImage(uri: Uri) {
+        _image.value = uri
     }
 }

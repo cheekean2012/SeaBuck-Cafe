@@ -38,6 +38,7 @@
 
     <color name="cardViewColor">#b0bec5</color>
     <color name="darkGrey">#212121</color>
+    <color name="mediumGrey">#7d7f7c</color>
     <color name="transparentColor">#00000000</color>
     <color name="imageBackground">#E1B1B1B1</color>
 

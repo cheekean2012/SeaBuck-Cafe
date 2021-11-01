@@ -76,7 +76,7 @@ class UserPaymentFragment: Fragment() {
             // Finalize convert format
             val date = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm").format(currentDateTime)
 
-            Log.d("type checked", cartViewModel.pickType.value.toString())
+            Log.d("date checked", date)
 
             val userId = auth.uid!!
 

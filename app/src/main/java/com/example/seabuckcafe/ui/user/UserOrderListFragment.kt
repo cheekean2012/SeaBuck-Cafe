@@ -40,8 +40,7 @@ class UserOrderListFragment: Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        Firestore().getUserOrderList(this, auth.uid!!, recyclerView,
-            orderList as ArrayList<UserOrderList>)
+        Firestore().getUserOrderList(this, auth.uid!!, recyclerView)
 
         binding.topAppBar.setNavigationOnClickListener { backward() }
     }

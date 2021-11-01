@@ -5,7 +5,11 @@
 
     <data>
         <variable
-            name="UserAccountFragment"
+            name="viewModel"
+            type="com.example.seabuckcafe.models.PersonalInfoViewModel" />
+
+        <variable
+            name="userAccountBinding"
             type="com.example.seabuckcafe.ui.user.UserAccountFragment" />
     </data>
 
@@ -33,79 +37,138 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fullNameField"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:hint="@string/full_name"
-            android:elevation="8dp"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topAppBarLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fullNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/userNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:paddingHorizontal="12dp"
+                android:textSize="18sp"
+                android:text="@string/full_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordField"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:hint="@string/prompt_password"
-            android:elevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fullNameField">
+            <TextView
+                android:id="@+id/yourUserName"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:layout_marginEnd="8dp"
+                android:text="@{viewModel.name}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/userNameForward"
+                tools:text="Your Name"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPassword"/>
+            <Button
+                android:id="@+id/userNameForward"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ic_forward"
+                android:backgroundTint="@color/transparentColor"
+                android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_fullName)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phoneNumberField"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:hint="@string/phone_number"
-            android:elevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passwordField">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phoneNumberEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="phone"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/save"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
-            android:elevation="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="16dp"
-            android:text="@string/save"
-            android:onClick="@{() -> UserAccountFragment.backward()}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userName">
+
+            <TextView
+                android:id="@+id/passwordText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:paddingHorizontal="12dp"
+                android:text="@string/prompt_password"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/passwordForward"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ic_forward"
+                android:backgroundTint="@color/transparentColor"
+                android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_password)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password">
+
+            <TextView
+                android:id="@+id/phoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:paddingHorizontal="12dp"
+                android:text="@string/phone_number"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/yourPhoneNumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textEnd"
+                android:layout_marginEnd="8dp"
+                android:text="@{viewModel.phoneNumber}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/phoneNumberForward"
+                tools:text="0123456789"/>
+
+            <Button
+                android:id="@+id/phoneNumberForward"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="24dp"
+                android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_phone_number)}"
+                android:background="@drawable/ic_forward"
+                android:backgroundTint="@color/transparentColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

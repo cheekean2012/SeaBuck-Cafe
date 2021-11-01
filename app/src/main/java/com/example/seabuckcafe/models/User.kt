@@ -8,7 +8,6 @@ data class User (
     val email: String = "",
     val phoneNumber: String = "",
     val image: String = "",
-    val password: String = "",
     val isUser: Boolean = true)
 
 

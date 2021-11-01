@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.user.FoodDetailFragment">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/topAppBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                android:fitsSystemWindows="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_arrow_back" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <TextView
+                android:id="@+id/yourOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textAlignment="center"
+                android:text="@string/your_order"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topAppBarLayout" />
+
+            <ScrollView
+                android:id="@+id/scrollable"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="8dp"
+                app:layout_constraintTop_toBottomOf="@id/yourOrder">
+
+                <TextView
+                    android:id="@+id/foodDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:overScrollMode="ifContentScrolls"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/yourOrder"
+                    tools:text="Order Detail Description" />
+
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/reasonToCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:visibility="invisible"
+                android:text="@string/cancel_reason"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scrollable" />
+
+            <TextView
+                android:id="@+id/reasonText"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="8dp"
+                android:paddingHorizontal="16dp"
+                android:lineSpacingMultiplier="1.5"
+                android:scrollbars="vertical"
+                android:visibility="invisible"
+                android:overScrollMode="ifContentScrolls"
+                android:scrollbarStyle="insideInset"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reasonToCancel"
+                tools:text="Reason Description" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

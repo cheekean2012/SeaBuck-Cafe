@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -178,6 +179,7 @@ class LoginFragment : Fragment() {
         personalInfoViewModel.setName(user.userName)
         personalInfoViewModel.setEmail(user.email)
         personalInfoViewModel.setPhoneNumber(user.phoneNumber)
+        personalInfoViewModel.setProfileImage(user.image.toUri())
 
         Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeUserFragment)
