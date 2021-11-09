@@ -6,7 +6,7 @@
     <data>
         <variable
             name="homeAdminFragment"
-            type="com.example.seabuckcafe.ui.home.HomeAdminFragment" />
+            type="com.example.seabuckcafe.ui.home.AdminHomeFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".ui.home.HomeAdminFragment">
+        tools:context=".ui.home.AdminHomeFragment">
 
         <GridLayout
             android:id="@+id/gridLayout"
@@ -75,6 +75,7 @@
                 android:id="@+id/order"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
+                android:onClick="@{() -> homeAdminFragment.goToOrder()}"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="8dp">
@@ -120,6 +121,7 @@
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
+                android:onClick="@{() -> homeAdminFragment.goToReport()}"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="8dp">
 

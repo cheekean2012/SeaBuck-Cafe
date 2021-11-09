@@ -2,15 +2,23 @@ package com.example.seabuckcafe.firestore
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
 import com.example.seabuckcafe.adapters.*
 import com.example.seabuckcafe.models.*
+import com.example.seabuckcafe.services.NotificationService
+import com.example.seabuckcafe.ui.home.AdminHomeFragment
 import com.example.seabuckcafe.ui.login.LoginFragment
+import com.example.seabuckcafe.ui.order.AdminOrderDeliveringListFragment
+import com.example.seabuckcafe.ui.order.AdminOrderPendingListFragment
+import com.example.seabuckcafe.ui.order.AdminOrderPrepareListFragment
 import com.example.seabuckcafe.ui.register.RegisterFragment
 import com.example.seabuckcafe.ui.user.UserAddressFragment
 import com.example.seabuckcafe.ui.user.UserContactFragment
@@ -23,6 +31,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storageMetadata
+import java.util.*
 
 class Firestore {
 
@@ -205,7 +214,6 @@ class Firestore {
                             "available" to foodItem.available
                         )).addOnSuccessListener {
                             Toast.makeText(activity.requireContext(), "Updated successful!", Toast.LENGTH_SHORT).show()
-                            Utils().backward(activity, R.id.adminFoodItemListFragment)
                         }
                 }
             }
@@ -348,12 +356,14 @@ class Firestore {
 
     }
 
-    fun addUserOrderList(activity: Fragment, orderList: UserOrderList, userId: String) {
+    fun addUserOrderList(context: Context, orderList: UserOrderList) {
         mFirestore.collection(Constants.ORDERS)
-            .document(userId)
-            .collection(Constants.USER_ORDERS)
             .document()
             .set(orderList, SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(context, "Successful Payment", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e -> Log.e("error", "$e") }
     }
 
     fun getUserOrderList(
@@ -362,14 +372,12 @@ class Firestore {
         recyclerView: RecyclerView
     ) {
         mFirestore.collection(Constants.ORDERS)
-            .document(userID)
-            .collection(Constants.USER_ORDERS)
+            .whereEqualTo("userID", userID)
             .orderBy("date", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
 
                 val orderItem = result.toObjects(UserOrderList::class.java)
-
                 recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
             }
     }
@@ -449,6 +457,133 @@ class Firestore {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getUserOrderListPending(
+        activity: Fragment,
+        recyclerView: RecyclerView?
+    ) {
+        mFirestore.collection(Constants.ORDERS)
+            .whereEqualTo("status", Constants.STATUS_PENDING)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
 
+                when (activity) {
+                    is AdminOrderPendingListFragment -> {
+                        val orderItem = result.toObjects(UserOrderList::class.java)
+                        recyclerView!!.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+
+                        for (document in result) {
+                            if (document.get("status").toString() == "pending") {
+                                // Call Notification
+                                Intent(activity.requireContext(), NotificationService::class.java).also { intents ->
+                                    activity.requireContext().startService(intents)
+                                }
+                            }
+                        }
+                    }
+                    is AdminHomeFragment -> {
+                        for (document in result) {
+                            if (document.get("status").toString() == "pending") {
+                                // Call Notification
+                                Intent(activity.requireContext(), NotificationService::class.java).also { intents ->
+                                    activity.requireContext().startService(intents)
+                                }
+                            }
+                        }
+                    }
+                }
+            }.addOnFailureListener { e -> Log.e("error", "$e") }
+    }
+
+    fun getUserOrderListPrepare(activity: Fragment, recyclerView: RecyclerView?) {
+        mFirestore.collection(Constants.ORDERS)
+            .whereEqualTo("status", Constants.STATUS_ON_PREPARE)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+
+                when (activity) {
+                    is AdminOrderPrepareListFragment -> {
+                        val orderItem = result.toObjects(UserOrderList::class.java)
+                        recyclerView!!.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+                    }
+                }
+            }
+    }
+
+    fun getUserOrderListDelivery(activity: Fragment, recyclerView: RecyclerView?) {
+        mFirestore.collection(Constants.ORDERS)
+            .whereEqualTo("status", Constants.STATUS_DELIVERING)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+
+                when (activity) {
+                    is AdminOrderDeliveringListFragment -> {
+                        val orderItem = result.toObjects(UserOrderList::class.java)
+                        recyclerView!!.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+                    }
+                }
+            }
+    }
+
+    fun updateUserOrderList(activity: Fragment, status: String, id: String) {
+        mFirestore.collection(Constants.ORDERS)
+            .document(id)
+            .update(mapOf(
+                "status" to status
+            ))
+            .addOnSuccessListener {
+                Toast.makeText(activity.requireContext(), "Updated successful", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e -> Log.e("error", "$e") }
+    }
+
+    fun cancelUserOrderList(context: Context, status: String, reason: String, id: String) {
+        mFirestore.collection(Constants.ORDERS)
+            .document(id)
+            .update(mapOf(
+                "status" to status,
+                "reason" to reason
+            ))
+            .addOnSuccessListener {
+                Toast.makeText(context, "Canceled successful", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e -> Log.e("error", "$e") }
+    }
+
+    fun getOrderList(activity: Fragment, recyclerView: RecyclerView) {
+        mFirestore.collection(Constants.ORDERS)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                val orderItem = result.toObjects(UserOrderList::class.java)
+                recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+            }
+    }
+
+    fun filterOrderList(activity: Fragment, recyclerView: RecyclerView, month: String, year: String, dayOfMonth: String?) {
+        if (dayOfMonth == null) {
+            mFirestore.collection(Constants.ORDERS)
+                .whereEqualTo("month", month)
+                .whereEqualTo("year", year)
+                .get()
+                .addOnSuccessListener { result ->
+                    val orderItem = result.toObjects(UserOrderList::class.java)
+                    recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+                }
+        } else {
+            mFirestore.collection(Constants.ORDERS)
+                .whereEqualTo("month", month)
+                .whereEqualTo("year", year)
+                .whereEqualTo("dayOfMonth", dayOfMonth)
+                .get()
+                .addOnSuccessListener { result ->
+                    val orderItem = result.toObjects(UserOrderList::class.java)
+                    recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
+                }
+        }
+    }
 }
 

@@ -26,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".services.RingtonePlayingService" />
+        <service android:name=".services.NotificationService" />
+
+        <receiver
+            android:name=".utils.AlarmReceiver"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

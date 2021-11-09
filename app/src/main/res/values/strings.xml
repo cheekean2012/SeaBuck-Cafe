@@ -123,6 +123,24 @@
     <string name="phone_number_order">Phone Number: %s</string>
     <string name="total_price">Total Price: %1$s</string>
 
+    <!--Strings related to admin order list and details-->
+    <string name="food">Food</string>
+    <string name="food_order">Food Order</string>
+    <string name="order_name">Name: %s</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="price_per_quantity">Unit Price</string>
+    <string name="pending">PENDING</string>
+    <string name="on_prepare">ON PREPARE</string>
+    <string name="complete">Complete</string>
+    <string name="pending_order">Pending Order</string>
+    <string name="prepare_order">On Prepare Order</string>
+    <string name="on_deliver_order">On Deliver Order</string>
+    <string name="your_cancel_reason">Your Cancel Reason</string>
 
+    <!--Strings related to admin report calendar-->
+    <string name="date_picker">Date Picker</string>
+    <string name="month_picker">Month Picker</string>
+    <string name="all">All</string>
 
 </resources>

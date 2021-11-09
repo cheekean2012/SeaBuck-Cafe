@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeAdminFragment"
-        android:name="com.example.seabuckcafe.ui.home.HomeAdminFragment"
+        android:name="com.example.seabuckcafe.ui.home.AdminHomeFragment"
         android:label="Welcome Back!"
         tools:layout="@layout/fragment_home_admin">
         <action
@@ -75,6 +75,12 @@
         <action
             android:id="@+id/action_homeAdminFragment_to_adminFoodItemListFragment"
             app:destination="@id/adminFoodItemListFragment" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_adminOrderListFragment"
+            app:destination="@id/adminOrderListFragment" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_adminReportListFragment"
+            app:destination="@id/adminReportListFragment" />
     </fragment>
     <fragment
         android:id="@+id/foodItemListFragment"
@@ -157,7 +163,7 @@
         tools:layout="@layout/fragment_user_payment"/>
     <fragment
         android:id="@+id/userOrderListFragment"
-        android:name="com.example.seabuckcafe.ui.user.UserOrderListFragment"
+        android:name="com.example.seabuckcafe.ui.order.UserOrderListFragment"
         android:label=""
         tools:layout="@layout/fragment_user_order_list">
         <action
@@ -184,4 +190,65 @@
         android:name="com.example.seabuckcafe.ui.user.UserContactFragment"
         android:label=""
         tools:layout="@layout/fragment_user_contact"/>
+    <fragment
+        android:id="@+id/adminOrderListFragment"
+        android:name="com.example.seabuckcafe.ui.order.AdminOrderListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_order_list">
+        <action
+            android:id="@+id/action_adminOrderListFragment_to_adminOrderPendingListFragment"
+            app:destination="@id/adminOrderPendingListFragment" />
+        <action
+            android:id="@+id/action_adminOrderListFragment_to_adminOrderPrepareListFragment"
+            app:destination="@id/adminOrderPrepareListFragment" />
+        <action
+            android:id="@+id/action_adminOrderListFragment_to_adminOrderDeliveringListFragment"
+            app:destination="@id/adminOrderDeliveringListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminOrderDetailFragment"
+        android:name="com.example.seabuckcafe.ui.order.AdminOrderDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_order_detail"/>
+    <fragment
+        android:id="@+id/adminOrderPendingListFragment"
+        android:name="com.example.seabuckcafe.ui.order.AdminOrderPendingListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_order_pending">
+        <action
+            android:id="@+id/action_adminOrderPendingListFragment_to_adminOrderDetailFragment"
+            app:destination="@id/adminOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminOrderPrepareListFragment"
+        android:name="com.example.seabuckcafe.ui.order.AdminOrderPrepareListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_order_prepare">
+        <action
+            android:id="@+id/action_adminOrderPrepareListFragment_to_adminOrderDetailFragment"
+            app:destination="@id/adminOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminOrderDeliveringListFragment"
+        android:name="com.example.seabuckcafe.ui.order.AdminOrderDeliveringListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_order_delivering">
+        <action
+            android:id="@+id/action_adminOrderDeliveringListFragment_to_adminOrderDetailFragment"
+            app:destination="@id/adminOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminReportListFragment"
+        android:name="com.example.seabuckcafe.ui.admin.AdminReportListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_report_list">
+        <action
+            android:id="@+id/action_adminReportListFragment_to_adminReportDetailFragment"
+            app:destination="@id/adminReportDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminReportDetailFragment"
+        android:name="com.example.seabuckcafe.ui.admin.AdminReportDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_admin_report_detail"/>
 </navigation>

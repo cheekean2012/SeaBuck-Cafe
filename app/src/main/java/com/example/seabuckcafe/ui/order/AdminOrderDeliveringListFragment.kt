@@ -1,4 +1,4 @@
-package com.example.seabuckcafe.ui.user
+package com.example.seabuckcafe.ui.order
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
-import com.example.seabuckcafe.databinding.FragmentUserOrderListBinding
+import com.example.seabuckcafe.adapters.OrderListItemAdapter
+import com.example.seabuckcafe.databinding.FragmentAdminOrderDeliveringBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserOrderList
 import com.example.seabuckcafe.utils.Utils
-import com.google.firebase.auth.FirebaseAuth
 
-class UserOrderListFragment: Fragment() {
-    private lateinit var binding: FragmentUserOrderListBinding
+class AdminOrderDeliveringListFragment: Fragment() {
+
+    private lateinit var binding: FragmentAdminOrderDeliveringBinding
     private lateinit var orderList: MutableList<UserOrderList>
-    private var auth = FirebaseAuth.getInstance()
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
@@ -25,7 +25,7 @@ class UserOrderListFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserOrderListBinding.inflate(inflater, container , false)
+        binding = FragmentAdminOrderDeliveringBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,19 +33,19 @@ class UserOrderListFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         orderList = ArrayList()
-
         binding.lifecycleOwner = viewLifecycleOwner
 
         recyclerView = binding.recyclerView
-
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = OrderListItemAdapter(this, requireContext(), orderList)
 
-        Firestore().getUserOrderList(this, auth.uid!!, recyclerView)
+        Firestore().getUserOrderListDelivery(this, recyclerView)
 
         binding.topAppBar.setNavigationOnClickListener { backward() }
     }
 
     private fun backward() {
-        Utils().backward(this, R.id.homeUserFragment)
+        Utils().backward(this, R.id.adminOrderListFragment)
     }
+
 }

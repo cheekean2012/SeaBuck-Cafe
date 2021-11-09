@@ -1,6 +1,8 @@
 package com.example.seabuckcafe.models
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.ServerTimestamp
 
 data class User (
     val id: String = "",
@@ -36,7 +38,12 @@ data class UserAddressList (
 
 data class UserOrderList(
     @DocumentId var id: String? = null,
-    val date: String = "",
+    val userID: String = "",
+    @ServerTimestamp var date: Timestamp? = null,
+    val dayOfMonth: String = "",
+    val month: String = "",
+    val year: String = "",
+    val time: String = "",
     val userName: String = "",
     val phoneNumber: String = "",
     val foodItem: MutableList<ProductItem>? = null,

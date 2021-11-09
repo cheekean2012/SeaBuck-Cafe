@@ -17,6 +17,7 @@ object Constants {
     const val STATUS_DELIVERING: String = "delivering"
     const val STATUS_COMPLETE: String = "complete"
     const val STATUS_CANCEL: String = "cancel"
+    const val CHANNEL_ID: String = "order"
     const val QUANTITY_INCREASE: Int = 1
     const val QUANTITY_DECREASE: Int = 1
 

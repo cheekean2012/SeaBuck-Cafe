@@ -30,6 +30,13 @@
 
     </style>
 
+    <style name="MonthPickerDialogStyle" >
+        <item name="monthBgSelectedColor">@color/mediumGrey</item>
+        <item name="monthFontColorSelected">@color/white</item>
+
+        <item name="headerBgColor">@color/darkGrey</item>
+        <item name="dialogActionButtonColor">@color/purple_500</item>
+    </style>
 
 
 </resources>

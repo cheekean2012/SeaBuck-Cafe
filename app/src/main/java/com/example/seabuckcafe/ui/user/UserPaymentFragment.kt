@@ -1,6 +1,7 @@
 package com.example.seabuckcafe.ui.user
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +27,8 @@ import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserPaymentFragment: Fragment() {
     private lateinit var binding: FragmentUserPaymentBinding
@@ -44,6 +47,7 @@ class UserPaymentFragment: Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,19 +74,27 @@ class UserPaymentFragment: Fragment() {
         } else {
 
             // Get current date & time
-            val currentDateTime = LocalDateTime.now()
-            // Format date time style
-            currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
-            // Finalize convert format
-            val date = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm").format(currentDateTime)
+            val timeStamp = com.google.firebase.Timestamp.now()
+            val currentDateTime = Calendar.getInstance()
+            val dayOfMonth = currentDateTime.get(Calendar.DAY_OF_MONTH)
+            val month = currentDateTime.get(Calendar.MONTH) + 1
+            val year = currentDateTime.get(Calendar.YEAR)
+            val time = LocalDateTime.now()
 
-            Log.d("date checked", date)
+            val formatter = DateTimeFormatter.ofPattern("HH:mm").format(time)
+
+            Log.d("date checked", "$dayOfMonth $month $year, $formatter")
 
             val userId = auth.uid!!
 
             val order = UserOrderList(
                 "",
-                date,
+                userId,
+                timeStamp,
+                dayOfMonth.toString(),
+                month.toString(),
+                year.toString(),
+                formatter,
                 personalInfoViewModel.name.value.toString(),
                 personalInfoViewModel.phoneNumber.value.toString(),
                 cartViewModel.product.value,
@@ -92,9 +104,10 @@ class UserPaymentFragment: Fragment() {
                 Constants.STATUS_PENDING,
                 ""
             )
-            Firestore().addUserOrderList(this, order, userId)
+            Firestore().addUserOrderList(requireContext(), order)
+
             cartViewModel.clearProduct()
-            Toast.makeText(requireContext(), "Successful Payment", Toast.LENGTH_SHORT).show()
+
             Utils().backward(this, R.id.homeUserFragment)
         }
     }
@@ -142,16 +155,20 @@ class UserPaymentFragment: Fragment() {
     // checked the pickup type to show payment method
     private fun showPaymentMethod(radioGroup: RadioGroup?, checkId: Int) {
 
-        when (checkId) {
-            R.id.selfPickupBtn -> {
-                binding.paymentType.visibility = View.VISIBLE
-                binding.cashBtn.visibility = View.INVISIBLE
-                binding.cardBtn.visibility = View.VISIBLE
-            }
-            R.id.deliveryBtn -> {
-                binding.paymentType.visibility = View.VISIBLE
-                binding.cashBtn.visibility = View.VISIBLE
-                binding.cardBtn.visibility = View.VISIBLE
+        binding.apply {
+            when (checkId) {
+                R.id.selfPickupBtn -> {
+                    paymentType.visibility = View.VISIBLE
+                    paymentGroup.clearCheck()
+                    cashBtn.visibility = View.INVISIBLE
+                    cardBtn.visibility = View.VISIBLE
+                }
+                R.id.deliveryBtn -> {
+                    paymentType.visibility = View.VISIBLE
+                    paymentGroup.clearCheck()
+                    cashBtn.visibility = View.VISIBLE
+                    cardBtn.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -159,18 +176,20 @@ class UserPaymentFragment: Fragment() {
     // checked the payment type to show card input
     private fun showCardInput(radioGroup: RadioGroup?, checkedId: Int) {
 
-        when (checkedId) {
-            R.id.cardBtn -> {
-                binding.cardNumber.visibility = View.VISIBLE
-                binding.cardNumberLayout.visibility = View.VISIBLE
-                binding.cardNumberCVCLayout.visibility = View.VISIBLE
-            }
-            R.id.cashBtn -> {
-                binding.cardNumber.visibility = View.INVISIBLE
-                binding.cardNumberLayout.visibility = View.INVISIBLE
-                binding.cardNumberCVCLayout.visibility = View.INVISIBLE
-                binding.cardNumberEditText.text = null
-                binding.cardNumberCVCEditText.text = null
+        binding.apply {
+            when (checkedId) {
+                R.id.cardBtn -> {
+                    cardNumber.visibility = View.VISIBLE
+                    cardNumberLayout.visibility = View.VISIBLE
+                    cardNumberCVCLayout.visibility = View.VISIBLE
+                }
+                R.id.cashBtn -> {
+                    cardNumber.visibility = View.INVISIBLE
+                    cardNumberLayout.visibility = View.INVISIBLE
+                    cardNumberCVCLayout.visibility = View.INVISIBLE
+                    cardNumberEditText.text = null
+                    cardNumberCVCEditText.text = null
+                }
             }
         }
     }
