@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="homeUserFragment"
-            type="com.example.seabuckcafe.ui.home.HomeUserFragment" />
+            name="userHomeFragment"
+            type="com.example.seabuckcafe.ui.home.UserHomeFragment" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:context=".ui.home.HomeUserFragment">
+                tools:context=".ui.home.UserHomeFragment">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/topAppBarLayout"
@@ -99,7 +99,7 @@
                         android:layout_columnWeight="1"
                         app:cardElevation="0dp"
                         android:layout_marginTop="16dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/breakfast)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/breakfast)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,7 +140,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/lunch)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/lunch)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -181,7 +181,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/dinner)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/dinner)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -223,7 +223,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/snacks)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/snacks)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -265,7 +265,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/drinks)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/drinks)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -306,7 +306,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/side_dishes)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/side_dishes)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -347,7 +347,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/dessert)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/dessert)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -388,7 +388,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeUserFragment.forwardToListFoodItem(@string/others)}"
+                        android:onClick="@{() -> userHomeFragment.forwardToListFoodItem(@string/others)}"
                         app:cardBackgroundColor="@color/transparentColor">
 
                         <androidx.constraintlayout.widget.ConstraintLayout

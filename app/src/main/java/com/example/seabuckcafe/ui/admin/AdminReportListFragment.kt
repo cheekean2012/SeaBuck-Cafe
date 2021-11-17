@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
@@ -19,7 +18,6 @@ import com.example.seabuckcafe.databinding.DialogCalendarSelectionBinding
 import com.example.seabuckcafe.databinding.FragmentAdminReportListBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserOrderList
-import com.example.seabuckcafe.models.UserOrderViewModel
 import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.Timestamp
 import com.whiteelephant.monthpicker.MonthPickerDialog
@@ -30,7 +28,6 @@ import kotlin.collections.ArrayList
 class AdminReportListFragment: Fragment() {
 
     private lateinit var binding: FragmentAdminReportListBinding
-    private val reportViewModel: UserOrderViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var orderList: MutableList<UserOrderList>
     private lateinit var dateList: MutableList<Timestamp>

@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.seabuckcafe.R
-import com.example.seabuckcafe.adapters.OrderListItemAdapter
 import com.example.seabuckcafe.databinding.FragmentAdminOrderDeliveringBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserOrderList
-import com.example.seabuckcafe.utils.Utils
 
 class AdminOrderDeliveringListFragment: Fragment() {
 
@@ -37,15 +34,9 @@ class AdminOrderDeliveringListFragment: Fragment() {
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = OrderListItemAdapter(this, requireContext(), orderList)
 
         Firestore().getUserOrderListDelivery(this, recyclerView)
 
-        binding.topAppBar.setNavigationOnClickListener { backward() }
-    }
-
-    private fun backward() {
-        Utils().backward(this, R.id.adminOrderListFragment)
     }
 
 }

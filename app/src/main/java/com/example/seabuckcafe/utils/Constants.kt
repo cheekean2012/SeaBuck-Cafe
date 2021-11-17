@@ -1,9 +1,5 @@
 package com.example.seabuckcafe.utils
 
-import android.net.Uri
-import android.webkit.MimeTypeMap
-import androidx.fragment.app.Fragment
-
 object Constants {
     const val USERS: String = "users"
     const val ADMIN: String = "admin"
@@ -11,7 +7,6 @@ object Constants {
     const val ADDRESS: String = "addresses"
     const val USER_ADDRESS: String = "userAddress"
     const val ORDERS: String = "orders"
-    const val USER_ORDERS: String = "userOrders"
     const val STATUS_PENDING: String = "pending"
     const val STATUS_ON_PREPARE: String = "on prepare"
     const val STATUS_DELIVERING: String = "delivering"
@@ -33,10 +28,4 @@ object Constants {
             ("Side Dishes")
         )
     }
-
-    fun getFileExtension(activity: Fragment, uri: Uri?): String? {
-        return MimeTypeMap.getSingleton()
-            .getExtensionFromMimeType(activity.requireActivity().contentResolver.getType(uri!!))
-    }
-
 }

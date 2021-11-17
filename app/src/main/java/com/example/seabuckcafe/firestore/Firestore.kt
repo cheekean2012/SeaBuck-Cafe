@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.seabuckcafe.R
+import com.example.seabuckcafe.SplashScreenFragment
 import com.example.seabuckcafe.adapters.*
 import com.example.seabuckcafe.models.*
 import com.example.seabuckcafe.services.NotificationService
@@ -31,12 +32,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storageMetadata
-import java.util.*
 
 class Firestore {
 
     private val mFirestore = FirebaseFirestore.getInstance()
-    private var imageUrl = ""
 
     fun registerUser(activity: RegisterFragment, userInfo: User) {
 
@@ -82,6 +81,16 @@ class Firestore {
                 val user = document.toObject(User::class.java)
 
                 when(activity) {
+                    is SplashScreenFragment -> {
+                        // Transfer the result to login fragment
+                        if (user != null && user.isUser) {
+                            activity.userLoginSuccess(user)
+                        } else {
+                            // Find admin result if not the users id
+                            getAdminDetails(activity)
+                        }
+                    }
+
                     is LoginFragment -> {
                         // Transfer the result to login fragment
                         if (user != null && user.isUser) {
@@ -106,6 +115,12 @@ class Firestore {
                 val admin = document.toObject(Admin::class.java)
 
                 when(activity) {
+                    is SplashScreenFragment -> {
+                        // Transfer the result to login fragment
+                        if (admin != null && !admin.isUser) {
+                            activity.adminLoginSuccess(admin)
+                        }
+                    }
                     is LoginFragment -> {
                         // Transfer the result to login fragment
                         if (admin != null && !admin.isUser) {
@@ -116,7 +131,7 @@ class Firestore {
             }
     }
 
-    fun uploadFoodMenuItem(activity: Fragment, imageUri: Uri?, foodItem: AdminMenuItem) {
+    fun uploadFoodMenuItem(context: Context, imageUri: Uri?, foodItem: AdminMenuItem) {
 
         // Generate a document id
         val document = mFirestore.collection(Constants.MENUS).document()
@@ -141,8 +156,7 @@ class Firestore {
                 mFirestore.collection(Constants.MENUS).document(document.id)
                     .set(foodItem, SetOptions.merge())
                     .addOnSuccessListener {
-                        Toast.makeText(activity.requireContext(), "Added successful!", Toast.LENGTH_SHORT).show()
-                        Utils().backward(activity, R.id.adminFoodItemListFragment)
+                        Toast.makeText(context, "Added successful!", Toast.LENGTH_SHORT).show()
                     }
             }
         }
@@ -170,7 +184,7 @@ class Firestore {
             }
     }
 
-    fun updateFoodMenuItem(activity: Fragment, imageUri: Uri?, foodItem: AdminMenuItem) {
+    fun updateFoodMenuItem(activity: Fragment, context: Context, imageUri: Uri?, foodItem: AdminMenuItem) {
 
         // If the admin didn't change picture, it will only update others information and save same picture
         if (imageUri == null) {
@@ -184,7 +198,7 @@ class Firestore {
                     "description" to foodItem.description,
                     "available" to foodItem.available
                 )).addOnSuccessListener {
-                    Toast.makeText(activity.requireContext(), "Updated successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Updated successful!", Toast.LENGTH_SHORT).show()
                     Utils().backward(activity, R.id.adminFoodItemListFragment)
                 }
         } else {
@@ -213,7 +227,8 @@ class Firestore {
                             "description" to foodItem.description,
                             "available" to foodItem.available
                         )).addOnSuccessListener {
-                            Toast.makeText(activity.requireContext(), "Updated successful!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Updated successful!", Toast.LENGTH_SHORT).show()
+                            Utils().backward(activity, R.id.adminFoodItemListFragment)
                         }
                 }
             }
@@ -361,7 +376,7 @@ class Firestore {
             .document()
             .set(orderList, SetOptions.merge())
             .addOnSuccessListener {
-                Toast.makeText(context, "Successful Payment", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Successful Payment", Toast.LENGTH_LONG).show()
             }
             .addOnFailureListener { e -> Log.e("error", "$e") }
     }
@@ -437,9 +452,6 @@ class Firestore {
                     .update(mapOf(
                         "image" to uri.toString()
                     ))
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "updated Successfully", Toast.LENGTH_SHORT).show()
-                    }
             }
         }
     }
@@ -477,7 +489,7 @@ class Firestore {
                             if (document.get("status").toString() == "pending") {
                                 // Call Notification
                                 Intent(activity.requireContext(), NotificationService::class.java).also { intents ->
-                                    activity.requireContext().startService(intents)
+                                    activity.requireContext().startForegroundService(intents)
                                 }
                             }
                         }
@@ -487,7 +499,7 @@ class Firestore {
                             if (document.get("status").toString() == "pending") {
                                 // Call Notification
                                 Intent(activity.requireContext(), NotificationService::class.java).also { intents ->
-                                    activity.requireContext().startService(intents)
+                                    activity.requireContext().startForegroundService(intents)
                                 }
                             }
                         }
@@ -528,14 +540,14 @@ class Firestore {
             }
     }
 
-    fun updateUserOrderList(activity: Fragment, status: String, id: String) {
+    fun updateUserOrderList(activity: Fragment, context: Context, status: String, id: String) {
         mFirestore.collection(Constants.ORDERS)
             .document(id)
             .update(mapOf(
                 "status" to status
             ))
             .addOnSuccessListener {
-                Toast.makeText(activity.requireContext(), "Updated successful", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Updated successful", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e -> Log.e("error", "$e") }
     }
@@ -565,12 +577,18 @@ class Firestore {
 
     fun filterOrderList(activity: Fragment, recyclerView: RecyclerView, month: String, year: String, dayOfMonth: String?) {
         if (dayOfMonth == null) {
+            Log.d("is day of month?", "true")
+
             mFirestore.collection(Constants.ORDERS)
                 .whereEqualTo("month", month)
                 .whereEqualTo("year", year)
                 .get()
                 .addOnSuccessListener { result ->
+
                     val orderItem = result.toObjects(UserOrderList::class.java)
+
+                    orderItem.sortByDescending { it.date }
+
                     recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
                 }
         } else {
@@ -581,8 +599,11 @@ class Firestore {
                 .get()
                 .addOnSuccessListener { result ->
                     val orderItem = result.toObjects(UserOrderList::class.java)
+
+                    orderItem.sortByDescending { it.date }
+
                     recyclerView.adapter = OrderListItemAdapter(activity, activity.requireContext(), orderItem)
-                }
+                }.addOnFailureListener {e -> Log.e("error", "$e") }
         }
     }
 }

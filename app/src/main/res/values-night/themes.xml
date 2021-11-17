@@ -38,5 +38,17 @@
         <item name="dialogActionButtonColor">@color/purple_500</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        // Set the splash screen background, animated icon, and animation duration.
+        <item name="windowSplashScreenBackground">@color/cardview_dark_background</item>
 
+        // Use windowSplashScreenAnimatedIcon to add either a drawable or an
+        // animated drawable. One of these is required.
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_seabuck_cafe</item>
+        <item name="windowSplashScreenAnimationDuration">3000</item>  # Required for
+        # animated icons
+
+        // Set the theme of the Activity that directly follows your splash screen.
+        <item name="postSplashScreenTheme">@style/Theme.SeaBuckCafe</item>  # Required.
+    </style>
 </resources>

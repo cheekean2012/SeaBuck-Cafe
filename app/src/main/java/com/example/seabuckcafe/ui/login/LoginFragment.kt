@@ -1,7 +1,9 @@
 package com.example.seabuckcafe.ui.login
 
-import android.content.ContentValues.TAG
+import android.app.Dialog
+import android.content.ContentValues
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -11,9 +13,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.util.Patterns
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -26,6 +26,7 @@ import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.Admin
 import com.example.seabuckcafe.models.PersonalInfoViewModel
 import com.example.seabuckcafe.models.User
+import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,6 +35,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val personalInfoViewModel: PersonalInfoViewModel by activityViewModels()
+    private lateinit var mProgressDialog: Dialog
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -41,16 +43,25 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding = fragmentBinding
-        return fragmentBinding.root
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Binding data
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.insetsController?.show(WindowInsets.Type.statusBars())
+        } else {
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+            )
+        }
+
         binding.loginFragment = this@LoginFragment
+        binding.passwordEditText.setOnKeyListener{view, keyCode, _ -> Utils().handleKeyEvent(view, keyCode, requireContext())}
 
         //create span text
         spannable()
@@ -61,12 +72,6 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Initialize authentication
         auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            if (currentUser.isEmailVerified) {
-                Firestore().getUserDetails(this)
-            }
-        }
     }
 
     private fun spannable(){
@@ -106,52 +111,79 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
     }
 
+    fun goToResetPassword() {
+        findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
+    }
+
     fun goToHomeScreen() {
 
-        // check validation before go to next fragment
-        if (binding.emailAddressEditText.text.toString().isEmpty()) {
-            binding.emailAddressField.error = getString(R.string.empty_blank)
-            return
-        } else { binding.emailAddressField.isErrorEnabled = false }
+        val checkValidation = validInfo()
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailAddressEditText.text.toString()).matches()) {
-            binding.emailAddressField.error = getString(R.string.inValid_email)
-            return
-        } else { binding.emailAddressField.isErrorEnabled = false }
+        if (checkValidation) {
+            val email = binding.emailAddressEditText.text.toString().trim{ it <= ' ' }
+            val password = binding.passwordEditText.text.toString().trim { it <= ' ' }
 
-        if (binding.passwordEditText.text.toString().isEmpty()) {
-            binding.passwordField.error = getString(R.string.empty_blank)
-            return
-        } else { binding.passwordField.isErrorEnabled = false }
+            showProgress()
 
-        if (binding.passwordEditText.text.toString().length < 6) {
-            binding.passwordField.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-            binding.passwordEditText.text = null
-            binding.passwordField.error = getString(R.string.minimum_six_length)
-            return
-        } else { binding.passwordField.isErrorEnabled = false }
+            // Sign in using authentication
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(ContentValues.TAG, "signInWithEmail:success")
 
-        val email = binding.emailAddressEditText.text.toString().trim{ it <= ' ' }
-        val password = binding.passwordEditText.text.toString().trim { it <= ' ' }
+                        val user:FirebaseUser? = auth.currentUser
+                        updateUI(user)
+                    } else {
+                        Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
 
-        // Sign in using authentication
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
+                        closeProgress()
 
-                    val user:FirebaseUser? = auth.currentUser
-                    updateUI(user)
-                } else {
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(activity, "Invalid email or password!",
-                        Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(activity, "Invalid email or password!",
+                            Toast.LENGTH_SHORT).show()
+                        updateUI(null)
+                    }
                 }
+        }
+    }
+
+    private fun validInfo(): Boolean {
+
+        binding.apply {
+            val email = emailAddressEditText.text.toString()
+            val password = passwordEditText.text.toString()
+
+            if (email.isEmpty()) {
+                emailAddressField.error = getString(R.string.empty_blank)
+                return false
             }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailAddressField.error = getString(R.string.inValid_email)
+                return false
+            }
+
+            emailAddressField.error= null
+            emailAddressField.clearFocus()
+
+            if (password.isEmpty()) {
+                passwordField.error = getString(R.string.empty_blank)
+                return false
+            }
+
+            if (password.length < 6) {
+                passwordField.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+                passwordEditText.text = null
+                passwordField.error = getString(R.string.minimum_six_length)
+                return false
+            }
+
+            passwordField.error = null
+            passwordField.clearFocus()
+        }
+
+        return true
     }
 
     // Check if the user has been login or isEmailVerified
@@ -163,6 +195,7 @@ class LoginFragment : Fragment() {
                 // Get user details information
                 Firestore().getUserDetails(this)
             } else {
+                closeProgress()
                 Toast.makeText(activity, "Please verify your email !",
                 Toast.LENGTH_SHORT).show()
             }
@@ -171,6 +204,7 @@ class LoginFragment : Fragment() {
 
     fun userLoginSuccess(user: User){
 
+        closeProgress()
         Log.d("Full Name", user.userName)
         Log.d("Email Address", user.email)
         Log.d("Phone Number", user.phoneNumber)
@@ -181,12 +215,12 @@ class LoginFragment : Fragment() {
         personalInfoViewModel.setPhoneNumber(user.phoneNumber)
         personalInfoViewModel.setProfileImage(user.image.toUri())
 
-        Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeUserFragment)
     }
 
     fun adminLoginSuccess(admin: Admin) {
 
+        closeProgress()
         Log.d("Full Name", admin.userName)
         Log.d("Email Address", admin.email)
         Log.d("Phone Number", admin.phoneNumber)
@@ -196,8 +230,22 @@ class LoginFragment : Fragment() {
         personalInfoViewModel.setEmail(admin.email)
         personalInfoViewModel.setPhoneNumber(admin.phoneNumber)
 
-        Toast.makeText(activity, "Login Successful!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_loginFragment_to_homeAdminFragment)
+    }
+
+    private fun showProgress() {
+        mProgressDialog = Dialog(requireContext())
+
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        mProgressDialog.show()
+    }
+
+    private fun closeProgress() {
+        mProgressDialog.dismiss()
     }
 
 }

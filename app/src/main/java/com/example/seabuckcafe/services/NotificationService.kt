@@ -1,5 +1,6 @@
 package com.example.seabuckcafe.services
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -8,8 +9,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.seabuckcafe.MainActivity
 import com.example.seabuckcafe.R
@@ -36,6 +35,8 @@ class NotificationService: Service() {
 
     override fun onDestroy() {
         ringtone.stop()
+        stopForeground(true)
+        stopSelf()
     }
 
     private fun showNotification() {
@@ -48,18 +49,14 @@ class NotificationService: Service() {
             .createPendingIntent()
 
         // Notification setting
-        val builder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
-            .setSmallIcon(R.drawable.coffee_logo)
+        val notification = Notification.Builder(this, Constants.CHANNEL_ID)
+            .setSmallIcon(R.drawable.logo_seabuck_cafe)
             .setContentTitle("You has a new order")
             .setContentText("Please accept as fast as possible")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+            .build()
 
-        with(NotificationManagerCompat.from(this)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(123, builder.build())
-        }
+        startForeground(123, notification)
     }
 
     private fun createNotificationChannel() {

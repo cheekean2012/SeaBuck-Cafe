@@ -44,6 +44,7 @@ import java.io.ByteArrayOutputStream
 class AdminFoodDetailFragment: Fragment() {
     private lateinit var binding: FragmentAdminFoodDetailBinding
     private lateinit var mDialog: Dialog
+    private lateinit var mProgressDialog: Dialog
     private var mImageUri: Uri? = null
     private val shareViewModel: MenuSharedViewModel by activityViewModels()
 
@@ -81,7 +82,9 @@ class AdminFoodDetailFragment: Fragment() {
         if (it != null) {
             // Get gallery image uri
             mImageUri = it
-            Log.d("image Uri", it.toString())
+
+            shareViewModel.setImage(mImageUri!!)
+            Log.d("image Uri", "$mImageUri")
 
             Glide.with(requireContext())
                 .load(mImageUri)
@@ -122,6 +125,9 @@ class AdminFoodDetailFragment: Fragment() {
             // Set to list out food type in recycler view
             foodTypeEditText.setOnClickListener { foodTypeDialog(resources.getString(R.string.select_food_type), Constants.foodType()) }
 
+            // Set to hide soft keyboard
+            foodDescriptionText.setOnKeyListener { view, keyCode, _ -> Utils().handleKeyEvent(view, keyCode, requireContext()) }
+
             // Set to upload food menu item to firestore
             addFoodItem.setOnClickListener { uploadFoodMenuItem() }
         }
@@ -152,7 +158,12 @@ class AdminFoodDetailFragment: Fragment() {
                     shareViewModel.description.value.toString(),
                     shareViewModel.available.value!!
             )
-            Firestore().updateFoodMenuItem(this, mImageUri, updateFoodItem)
+            Log.d("imageurl", "$mImageUri")
+
+            showProgress()
+            Firestore().updateFoodMenuItem(this, requireContext(), mImageUri, updateFoodItem)
+
+            closeProgress()
 
         // Upload to firebase
         } else {
@@ -177,7 +188,11 @@ class AdminFoodDetailFragment: Fragment() {
                         switch
                     )
 
-                    Firestore().uploadFoodMenuItem(this, mImageUri, foodItem)
+                    showProgress()
+                    Firestore().uploadFoodMenuItem(requireContext(), mImageUri, foodItem)
+
+                    closeProgress()
+                    Utils().backward(this, R.id.adminFoodItemListFragment)
                 } else {
                     Toast.makeText(requireContext(),
                         "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
@@ -313,8 +328,23 @@ class AdminFoodDetailFragment: Fragment() {
         })
     }
 
+    private fun showProgress() {
+        mProgressDialog = Dialog(requireContext())
+
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        mProgressDialog.show()
+    }
+
+    private fun closeProgress() {
+        mProgressDialog.dismiss()
+    }
+
     // Back to previous layout
-    private fun backward() {
+        private fun backward() {
         Utils().backward(this, R.id.adminFoodItemListFragment)
     }
 }

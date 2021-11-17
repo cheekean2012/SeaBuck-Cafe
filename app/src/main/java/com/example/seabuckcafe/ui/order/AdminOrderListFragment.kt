@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.seabuckcafe.R
+import com.example.seabuckcafe.adapters.AdminTabPageAdapter
 import com.example.seabuckcafe.databinding.FragmentAdminOrderListBinding
 import com.example.seabuckcafe.utils.Utils
+import com.google.android.material.tabs.TabLayoutMediator
 
 class AdminOrderListFragment: Fragment() {
     private lateinit var binding: FragmentAdminOrderListBinding
@@ -26,23 +28,26 @@ class AdminOrderListFragment: Fragment() {
 
 
         binding.topAppBar.setNavigationOnClickListener { backward() }
-        binding.pendingForward.setOnClickListener { goToPendingPage() }
-        binding.prepareForward.setOnClickListener { goToPreparePage() }
-        binding.deliveringForward.setOnClickListener { goToDeliveryPage() }
+
+        tabLayoutMediator()
     }
 
-    private fun goToDeliveryPage() {
-        Utils().forward(this, R.id.action_adminOrderListFragment_to_adminOrderDeliveringListFragment)
-    }
+    private fun tabLayoutMediator() {
 
-    private fun goToPreparePage() {
-        Utils().forward(this, R.id.action_adminOrderListFragment_to_adminOrderPrepareListFragment)
-    }
+        val tabLayout = binding.tabLayout
+        val viewPager2 = binding.viewPager2
 
-    private fun goToPendingPage() {
-        Utils().forward(this, R.id.action_adminOrderListFragment_to_adminOrderPendingListFragment)
-    }
+        val adapter = AdminTabPageAdapter(requireActivity().supportFragmentManager, requireActivity().lifecycle)
+        viewPager2.adapter = adapter
 
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            when (position) {
+                0 -> { tab.text = getString(R.string.pending) }
+                1 -> { tab.text = getString(R.string.on_prepare) }
+                2 -> { tab.text = getString(R.string.delivery) }
+            }
+        }.attach()
+    }
 
     private fun backward() {
         Utils().backward(this, R.id.homeAdminFragment)

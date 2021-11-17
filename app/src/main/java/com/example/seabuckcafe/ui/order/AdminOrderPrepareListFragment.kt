@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.seabuckcafe.R
 import com.example.seabuckcafe.databinding.FragmentAdminOrderPrepareBinding
 import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserOrderList
-import com.example.seabuckcafe.utils.Utils
 
 class AdminOrderPrepareListFragment: Fragment() {
 
@@ -40,11 +38,5 @@ class AdminOrderPrepareListFragment: Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         Firestore().getUserOrderListPrepare(this, recyclerView)
-
-        binding.topAppBar.setNavigationOnClickListener { backward() }
-    }
-
-    private fun backward() {
-        Utils().backward(this, R.id.adminOrderListFragment)
     }
 }

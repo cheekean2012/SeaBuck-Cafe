@@ -1,6 +1,7 @@
 package com.example.seabuckcafe.ui.user
 
 import android.Manifest
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -34,6 +35,7 @@ class UserProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentUserProfileBinding
     private val personalInfoViewModel: PersonalInfoViewModel by activityViewModels()
+    private lateinit var mProgressDialog: Dialog
     private var mImageUri: Uri? = null
 
 
@@ -80,9 +82,11 @@ class UserProfileFragment : Fragment() {
 
     private fun checkProfilePicture() {
         if (personalInfoViewModel.image.value.toString() != "") {
+            showProgress()
             Glide.with(requireContext())
                 .load(personalInfoViewModel.image.value.toString())
                 .into(binding.profileImage)
+            closeProgress()
         }
     }
 
@@ -151,4 +155,18 @@ class UserProfileFragment : Fragment() {
         Utils().forward(this, R.id.action_userProfileFragment_to_userContactFragment)
     }
 
+    private fun showProgress() {
+        mProgressDialog = Dialog(requireContext())
+
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        mProgressDialog.show()
+    }
+
+   private fun closeProgress() {
+        mProgressDialog.dismiss()
+    }
 }

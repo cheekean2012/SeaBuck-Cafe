@@ -1,10 +1,8 @@
 package com.example.seabuckcafe.ui.home
 
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,7 +15,7 @@ import com.example.seabuckcafe.utils.Utils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class HomeUserFragment: Fragment() {
+class UserHomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeUserBinding
     private val sharedViewModel: MenuSharedViewModel by activityViewModels()
@@ -36,8 +34,18 @@ class HomeUserFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.insetsController?.show(WindowInsets.Type.statusBars())
+        } else {
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+            )
+        }
+
         binding.apply {
-            homeUserFragment = this@HomeUserFragment
+            userHomeFragment = this@UserHomeFragment
 
             // Set action bar in custom fragment page
             topAppBar.setNavigationIcon(R.drawable.ic_appbar_menu)

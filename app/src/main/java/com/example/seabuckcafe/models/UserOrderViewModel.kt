@@ -21,6 +21,9 @@ class UserOrderViewModel: ViewModel() {
     private val _status = MutableLiveData<String>()
     val status: LiveData<String> get() = _status
 
+    private val _address = MutableLiveData<String>()
+    val address: LiveData<String> get() = _address
+
     private val _pickupType = MutableLiveData<String>()
     val pickupType: LiveData<String> get() = _pickupType
 
@@ -50,6 +53,10 @@ class UserOrderViewModel: ViewModel() {
 
     fun setName(name: String) {
         _name.value = name
+    }
+
+    fun setAddress(address: String) {
+        _address.value = address
     }
 
     fun setStatus(status: String) {

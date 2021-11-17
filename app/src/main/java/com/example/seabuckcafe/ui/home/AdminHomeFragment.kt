@@ -19,11 +19,6 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-
-
-
-
-
 class AdminHomeFragment: Fragment() {
 
     private lateinit var binding: FragmentHomeAdminBinding
@@ -41,29 +36,20 @@ class AdminHomeFragment: Fragment() {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.insetsController?.show(WindowInsets.Type.statusBars())
+        } else {
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+            )
+        }
+
         binding.homeAdminFragment = this@AdminHomeFragment
         createNotificationChannel()
         Firestore().getUserOrderListPending(this, null)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.P)
-    fun sendNotification() {
-//        alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val intent = Intent(activity, AlarmReceiver::class.java)
-//
-//        pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
-//
-//        alarmManager.set(
-//            AlarmManager.RTC_WAKEUP,
-//            System.currentTimeMillis(),
-//            pendingIntent
-//        )
-
-        Intent(context, NotificationService::class.java).also { intents ->
-            requireContext().startService(intents)
-        }
-//        val startIntent = Intent(context, RingtonePlayingService::class.java)
-//        requireContext().startService(startIntent);
     }
 
     private fun createNotificationChannel() {
@@ -85,6 +71,8 @@ class AdminHomeFragment: Fragment() {
 
     fun backToLogin() {
         Firebase.auth.signOut()
+        Intent(context, NotificationService::class.java).also { intent ->
+            requireContext().stopService(intent) }
         Utils().forward(this, R.id.action_homeAdminFragment_to_loginFragment)
     }
 

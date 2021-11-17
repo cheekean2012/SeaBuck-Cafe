@@ -51,4 +51,5 @@ data class UserOrderList(
     val paymentType: String = "",
     val totalPrice: String = "",
     var status: String = "",
-    var reason: String = "")
+    var reason: String = "",
+    var address: String = "")

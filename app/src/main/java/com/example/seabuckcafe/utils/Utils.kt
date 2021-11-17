@@ -1,17 +1,16 @@
 package com.example.seabuckcafe.utils
 
+import android.content.Context
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Utils: Fragment() {
-
-    lateinit var getContent : ActivityResultLauncher<String>
-    var filterDate: String = ""
-    var dateFormat: String = ""
 
     // Set to back previous page
     fun backward(fragment: Fragment, navItemId: Int) {
@@ -36,4 +35,13 @@ class Utils: Fragment() {
         }
     }
 
+    fun handleKeyEvent(view: View, keyCode: Int, context: Context): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            //hide the keyboard
+            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            return true
+        }
+        return false
+    }
 }

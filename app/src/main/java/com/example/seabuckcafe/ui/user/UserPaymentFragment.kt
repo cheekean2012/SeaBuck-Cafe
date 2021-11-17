@@ -80,6 +80,7 @@ class UserPaymentFragment: Fragment() {
             val month = currentDateTime.get(Calendar.MONTH) + 1
             val year = currentDateTime.get(Calendar.YEAR)
             val time = LocalDateTime.now()
+            val address = binding.addressView.text.toString().trim { it <= ' ' }
 
             val formatter = DateTimeFormatter.ofPattern("HH:mm").format(time)
 
@@ -102,7 +103,8 @@ class UserPaymentFragment: Fragment() {
                 cartViewModel.paymentType.value.toString(),
                 cartViewModel.subTotal.value.toString(),
                 Constants.STATUS_PENDING,
-                ""
+                "",
+                address
             )
             Firestore().addUserOrderList(requireContext(), order)
 
@@ -134,13 +136,16 @@ class UserPaymentFragment: Fragment() {
             return false
         }
 
-        if (paymentCard && cardCVC.isNullOrEmpty()) {
-            binding.cardNumberCVCLayout.error = "Please input your card CVC"
+        if (paymentCard && cardNumber.toString().length != 16) {
+            binding.cardNumberLayout.error = "Please enter 16 digits"
             return false
         }
 
-        if (paymentCard && cardNumber.toString().length != 16) {
-            binding.cardNumberLayout.error = "Please enter 16 digits"
+        binding.cardNumberLayout.error = null
+        binding.cardNumberLayout.clearFocus()
+
+        if (paymentCard && cardCVC.isNullOrEmpty()) {
+            binding.cardNumberCVCLayout.error = "Please input your card CVC"
             return false
         }
 
@@ -149,6 +154,19 @@ class UserPaymentFragment: Fragment() {
             return false
         }
 
+        binding.cardNumberCVCLayout.error = null
+        binding.cardNumberCVCLayout.clearFocus()
+
+        val address = binding.addressView.text.toString().trim { it <= ' ' }
+
+        if (address.isEmpty()) {
+            binding.addressView.requestFocus()
+            binding.addressView.error = "Please select your address and make address has been added"
+            return false
+        }
+
+        binding.addressView.error = null
+        binding.addressView.clearFocus()
         return true
     }
 
@@ -162,12 +180,22 @@ class UserPaymentFragment: Fragment() {
                     paymentGroup.clearCheck()
                     cashBtn.visibility = View.INVISIBLE
                     cardBtn.visibility = View.VISIBLE
+                    cardNumber.visibility = View.INVISIBLE
+                    cardNumberLayout.visibility = View.INVISIBLE
+                    cardNumberCVCLayout.visibility = View.INVISIBLE
+                    cardNumberEditText.text = null
+                    cardNumberCVCEditText.text = null
                 }
                 R.id.deliveryBtn -> {
                     paymentType.visibility = View.VISIBLE
                     paymentGroup.clearCheck()
                     cashBtn.visibility = View.VISIBLE
                     cardBtn.visibility = View.VISIBLE
+                    cardNumber.visibility = View.INVISIBLE
+                    cardNumberLayout.visibility = View.INVISIBLE
+                    cardNumberCVCLayout.visibility = View.INVISIBLE
+                    cardNumberEditText.text = null
+                    cardNumberCVCEditText.text = null
                 }
             }
         }
@@ -201,12 +229,17 @@ class UserPaymentFragment: Fragment() {
         mDialog = Dialog(requireContext())
         val binding: DialogAddressListBinding = DialogAddressListBinding.inflate(layoutInflater)
         mDialog.setContentView(binding.root)
-
-        // Set title
         binding.dialogAddressTitle.text = title
-        binding.dialogAddressRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // Set title
+        binding.apply {
 
-        Firestore().getUserAddress(this, auth.uid!!, binding.dialogAddressRecyclerView, userAddressList)
+            Firestore().getUserAddress(this@UserPaymentFragment, auth.uid!!, binding.dialogAddressRecyclerView, userAddressList)
+            dialogAddressRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            val adapter = UserPaymentAddressListAdapter(this@UserPaymentFragment, requireContext(), userAddressList)
+            dialogAddressRecyclerView.adapter = adapter
+
+        }
+
         mDialog.show()
     }
 

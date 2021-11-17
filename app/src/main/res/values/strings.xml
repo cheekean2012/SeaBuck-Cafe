@@ -9,8 +9,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Invalid password</string>
     <string name="login_failed">"Login failed"</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forgot_password"><u>Forgot Password</u></string>
+    <string name="reset_email">Reset Email</string>
+    <string name="send">Send</string>
 
     <!--Strings related to register-->
     <string name="sign_up">Sign Up</string>
@@ -120,6 +121,7 @@
     <string name="cancel_reason">Cancel Reason</string>
     <string name="payment_type">Payment: %s</string>
     <string name="pickup_type">Pickup: %s</string>
+    <string name="order_address">Address: %s</string>
     <string name="phone_number_order">Phone Number: %s</string>
     <string name="total_price">Total Price: %1$s</string>
 
@@ -137,10 +139,14 @@
     <string name="prepare_order">On Prepare Order</string>
     <string name="on_deliver_order">On Deliver Order</string>
     <string name="your_cancel_reason">Your Cancel Reason</string>
+    <string name="notification_title">You has a new order</string>
+    <string name="notification_message">Please accept as fast as possible</string>
 
     <!--Strings related to admin report calendar-->
     <string name="date_picker">Date Picker</string>
     <string name="month_picker">Month Picker</string>
     <string name="all">All</string>
+    <string name="loading">Loading...</string>
+
 
 </resources>

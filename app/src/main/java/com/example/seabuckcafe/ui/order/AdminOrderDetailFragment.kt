@@ -2,10 +2,11 @@ package com.example.seabuckcafe.ui.order
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.seabuckcafe.R
@@ -16,7 +17,6 @@ import com.example.seabuckcafe.services.NotificationService
 import com.example.seabuckcafe.utils.Constants
 import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 
 
 class AdminOrderDetailFragment: Fragment() {
@@ -38,15 +38,24 @@ class AdminOrderDetailFragment: Fragment() {
 
         val status = userOrderViewModel.status.value.toString()
 
-        Log.d("status", "$status")
-        if (status != Constants.STATUS_PENDING) {
-            binding.orderCancel.isClickable = false
-        }
-
         setOrderText()
-        binding.topAppBar.setNavigationOnClickListener { backward() }
-        binding.orderAccept.setOnClickListener { updateOrderInfo() }
-        binding.orderCancel.setOnClickListener { cancelOrder() }
+
+        binding.apply {
+
+            topAppBar.setNavigationOnClickListener { backward() }
+
+            if (status != Constants.STATUS_COMPLETE) {
+                orderAccept.setOnClickListener { updateOrderInfo() }
+            } else {
+                orderAccept.isClickable = false
+            }
+
+            if (status == Constants.STATUS_PENDING) {
+                orderCancel.setOnClickListener { cancelOrder() }
+            } else {
+                orderCancel.isClickable = false
+            }
+        }
     }
 
     private fun cancelOrder() {
@@ -55,21 +64,31 @@ class AdminOrderDetailFragment: Fragment() {
             .inflate(R.layout.dialog_order_cancel, null)
 
         // Get edit text id
-        val reason = inflater.findViewById<TextInputEditText>(R.id.cancelEditText)
+        val reason: EditText = inflater.findViewById(R.id.cancelEditText)
 
         // Create dialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(inflater)
             .setPositiveButton("OK") {
                     dialog, _ ->
-                val cancelReason = reason.text.toString()
-                userOrderViewModel.setStatus(Constants.STATUS_CANCEL)
-                val status = userOrderViewModel.status.value.toString()
-                val id = userOrderViewModel.id.value.toString()
 
-                Firestore().cancelUserOrderList(requireContext(), status, cancelReason, id)
+                val cancelReason = reason.text.toString().trim{ it <= ' '}
 
-                backward()
+                if (cancelReason.isEmpty()) {
+                    Toast.makeText(requireContext(), "Please enter your reason", Toast.LENGTH_SHORT).show()
+                } else {
+                    userOrderViewModel.setStatus(Constants.STATUS_CANCEL)
+                    val status = userOrderViewModel.status.value.toString()
+                    val id = userOrderViewModel.id.value.toString()
+
+                    Intent(context, NotificationService::class.java).also { intent ->
+                        requireContext().stopService(intent) }
+
+                    Firestore().cancelUserOrderList(requireContext(), status, cancelReason, id)
+
+                    backward()
+                }
+
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") {
@@ -90,7 +109,7 @@ class AdminOrderDetailFragment: Fragment() {
 
             if (status == Constants.STATUS_DELIVERING) {
                 status = Constants.STATUS_COMPLETE
-                binding.orderAccept.isClickable = false
+                backward()
             }
 
             if (status == Constants.STATUS_ON_PREPARE) {
@@ -124,7 +143,7 @@ class AdminOrderDetailFragment: Fragment() {
 
         }
         userOrderViewModel.setStatus(status)
-        Firestore().updateUserOrderList(this, status, id)
+        Firestore().updateUserOrderList(this, requireContext(), status, id)
     }
 
     private fun setOrderText() {
@@ -135,6 +154,7 @@ class AdminOrderDetailFragment: Fragment() {
                 orderPhoneNumber.text = getString(R.string.phone_number_order, phoneNumber.value.toString())
                 orderPayment.text = getString(R.string.payment_type, paymentType.value.toString())
                 orderPickup.text = getString(R.string.pickup_type, pickupType.value.toString())
+                orderAddress.text = getString(R.string.order_address, address.value.toString())
 
                 val foodItem = orderProduct.value?.joinToString(separator = "\n") {
                     "${it.itemName} x ${it.quantity}"
@@ -167,8 +187,9 @@ class AdminOrderDetailFragment: Fragment() {
         }
     }
 
+
     private fun backward() {
-        Utils().backward(this, R.id.adminOrderListFragment)
+        Utils().forward(this, R.id.action_adminOrderDetailFragment_to_adminOrderListFragment)
     }
 
 }

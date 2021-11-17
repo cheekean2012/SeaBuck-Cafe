@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +16,6 @@ import com.example.seabuckcafe.firestore.Firestore
 import com.example.seabuckcafe.models.UserAddressList
 import com.example.seabuckcafe.utils.Utils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -57,26 +58,30 @@ class UserAddressFragment : Fragment() {
             .inflate(R.layout.dialog_address_item, null)
 
         // Get edit text id
-        val newAddress = inflater.findViewById<TextInputEditText>(R.id.newAddressEditText)
+        val newAddress: EditText = inflater.findViewById(R.id.newAddressEditText)
 
         // Create dialog
         MaterialAlertDialogBuilder(requireContext())
             .setView(inflater)
             .setPositiveButton("OK") {
                 dialog, _ ->
-                val address = newAddress.text.toString()
+                val address = newAddress.text.toString().trim{ it <= ' '}
 
-                // Add data into useAddressList
-                userAddressList.add(UserAddressList("", address))
+                if (address.isEmpty()) {
+                    Toast.makeText(requireContext(), "Make sure you have enter address", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Add data into useAddressList
+                    userAddressList.add(UserAddressList("", address))
 
-                val userAddress = UserAddressList(
-                    "",
-                    address
-                )
-                Firestore().addUserAddress(this, userAddress, auth.uid!!)
+                    val userAddress = UserAddressList(
+                        "",
+                        address
+                    )
+                    Firestore().addUserAddress(this, userAddress, auth.uid!!)
 
-                // Save the data into adapter and display to recyclerView
-                recyclerView.adapter = UserAddressAdapter(this, requireContext(), userAddressList)
+                    // Save the data into adapter and display to recyclerView
+                    recyclerView.adapter = UserAddressAdapter(this, requireContext(), userAddressList)
+                }
 
                 dialog.dismiss()
             }

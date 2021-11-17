@@ -7,37 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/topAppBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="8dp"
-            android:fitsSystemWindows="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:elevation="0dp"
-                app:tint="?attr/colorOnSurface"
-                app:elevation="0dp"
-                app:backgroundTint="@color/transparentColor"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_arrow_back">
-            </com.google.android.material.appbar.MaterialToolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-            android:layout_marginTop="72dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/list_order_item" />

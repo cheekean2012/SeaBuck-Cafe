@@ -55,11 +55,9 @@ class UserOrderDetailFragment: Fragment() {
                 getString(R.string.total_price, getString(R.string.rm, priceFormat.toString().toDouble()))
 
             if (!reasonNotEmpty) {
-                binding.apply {
-                    reasonToCancel.visibility = View.VISIBLE
-                    reasonText.visibility = View.VISIBLE
-                    reasonText.text = reason.value
-                }
+                binding.reasonScroll.visibility = View.VISIBLE
+                binding.reasonToCancel.visibility = View.VISIBLE
+                binding.reasonText.text = reason.value.toString()
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.seabuckcafe.ui.user
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,7 @@ class UserAccountEditFragment: Fragment() {
 
     private lateinit var binding: FragmentUserEditAccountBinding
     private val personalInfoViewModel: PersonalInfoViewModel by activityViewModels()
+    private lateinit var mProgressDialog: Dialog
     private var auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
@@ -42,6 +44,7 @@ class UserAccountEditFragment: Fragment() {
         binding.apply {
 
             topAppBar.setNavigationOnClickListener { backward() }
+            viewModel = personalInfoViewModel
 
             fullNameEditText.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode) }
             currentPasswordText.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode) }
@@ -54,17 +57,19 @@ class UserAccountEditFragment: Fragment() {
 
     private fun checkForwardButton() {
 
-        when (personalInfoViewModel.forwardText.value.toString()) {
+        binding.apply {
+            when (personalInfoViewModel.forwardText.value.toString()) {
 
-            getString(R.string.your_fullName) -> {
-                binding.fullNameField.visibility = View.VISIBLE
-            }
-            getString(R.string.your_password) -> {
-                binding.currentPassword.visibility = View.VISIBLE
-                binding.newPassword.visibility = View.VISIBLE
-            }
-            getString(R.string.your_phone_number) -> {
-                binding.phoneNumberField.visibility = View.VISIBLE
+                getString(R.string.your_fullName) -> {
+                    fullNameField.visibility = View.VISIBLE
+                }
+                getString(R.string.your_password) -> {
+                    currentPassword.visibility = View.VISIBLE
+                    newPassword.visibility = View.VISIBLE
+                }
+                getString(R.string.your_phone_number) -> {
+                    phoneNumberField.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -91,15 +96,15 @@ class UserAccountEditFragment: Fragment() {
         binding.apply {
             val currentPassword = currentPasswordText.text.toString()
             val newPassword = newPasswordText.text.toString()
-            val passwordValidationCheck = passwordLength(newPassword)
+            val passwordValidationCheck = validationCheck()
 
             if (passwordValidationCheck) {
                 val user = auth.currentUser
 
                 if (user != null && user.email != null) {
-                    val authCredential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
 
-                    Log.d("email check", user.email!!)
+                    showProgress()
+                    val authCredential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
 
                     user.reauthenticate(authCredential)
                         .addOnCompleteListener {
@@ -107,14 +112,18 @@ class UserAccountEditFragment: Fragment() {
 
                                 user.updatePassword(newPassword).addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
+                                        closeProgress()
                                         Toast.makeText(requireContext(), "Your password changed successful", Toast.LENGTH_SHORT).show()
                                         backward()
                                     }
                                 }.addOnFailureListener { e ->
+                                    closeProgress()
+                                    Toast.makeText(requireContext(), "Invalid password", Toast.LENGTH_SHORT).show()
                                     Log.e("check error", e.toString())
                                 }
                             }
                         }.addOnFailureListener {
+                            closeProgress()
                             Toast.makeText(requireContext(), "Please enter correctly your current password", Toast.LENGTH_SHORT).show()
                         }
                 }
@@ -123,11 +132,6 @@ class UserAccountEditFragment: Fragment() {
     }
 
     private fun savePhoneNumber() {
-//        val accountInfo = HashMap<String, Any>()
-//        accountInfo["userName"] = personalInfoViewModel.name.value.toString()
-//        accountInfo["phoneNumber"] = personalInfoViewModel.phoneNumber.value.toString()
-//
-//        Firestore().updateUserAccountInfo(this@UserAccountEditFragment, accountInfo)
 
         var phoneNumber = binding.phoneNumberEditText.text.toString()
         val validCheck = phoneNumberValid(phoneNumber)
@@ -177,19 +181,40 @@ class UserAccountEditFragment: Fragment() {
         }
     }
 
-    private fun passwordLength(password: String): Boolean {
+    private fun validationCheck(): Boolean {
 
-        return when {
-            password.length < 6 -> {
-                binding.newPassword.error = "Please enter the password at least 6 digits"
-                false
+        binding.apply {
+            val current = currentPasswordText.text.toString()
+            val new = newPasswordText.text.toString()
+
+            if (current.isEmpty()) {
+                currentPassword.error = getString(R.string.empty_blank)
+                return false
             }
-            password.isEmpty() -> {
-                binding.newPassword.error = "Please enter your password"
-                false
+
+            if (current.length < 6) {
+                currentPassword.error = getString(R.string.minimum_six_length)
+                return false
             }
-            else -> true
+
+            currentPassword.error = null
+            currentPassword.clearFocus()
+
+            if (new.isEmpty()) {
+                newPassword.error = getString(R.string.empty_blank)
+                return false
+            }
+
+            if (new.length < 6) {
+                newPassword.error = getString(R.string.minimum_six_length)
+                return false
+            }
+
+            newPassword.error = null
+            newPassword.clearFocus()
+
         }
+        return true
     }
 
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
@@ -202,6 +227,20 @@ class UserAccountEditFragment: Fragment() {
         return false
     }
 
+    private fun showProgress() {
+        mProgressDialog = Dialog(requireContext())
+
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        mProgressDialog.show()
+    }
+
+    private fun closeProgress() {
+        mProgressDialog.dismiss()
+    }
 
     private fun backward() {
         Utils().backward(this, R.id.userAccountFragment)

@@ -13,12 +13,8 @@ import com.example.seabuckcafe.databinding.ListOrderItemBinding
 import com.example.seabuckcafe.models.UserOrderList
 import com.example.seabuckcafe.models.UserOrderViewModel
 import com.example.seabuckcafe.ui.admin.AdminReportListFragment
-import com.example.seabuckcafe.ui.order.AdminOrderDeliveringListFragment
-import com.example.seabuckcafe.ui.order.AdminOrderPendingListFragment
-import com.example.seabuckcafe.ui.order.AdminOrderPrepareListFragment
-import com.example.seabuckcafe.ui.order.UserOrderListFragment
+import com.example.seabuckcafe.ui.order.*
 import com.example.seabuckcafe.utils.Utils
-import com.google.firebase.Timestamp
 
 class OrderListItemAdapter(
     private val activity: Fragment,
@@ -26,8 +22,6 @@ class OrderListItemAdapter(
     private var orderList: MutableList<UserOrderList>): RecyclerView.Adapter<OrderListItemAdapter.OrderListViewHolder>() {
 
     private val orderViewModel: UserOrderViewModel by activity.activityViewModels()
-
-    private var dateList: MutableList<Timestamp> = ArrayList()
 
     inner class OrderListViewHolder(val view: ListOrderItemBinding): RecyclerView.ViewHolder(view.root) {
         val orderDate: TextView = view.orderDate
@@ -47,6 +41,7 @@ class OrderListItemAdapter(
                 setUserID(position.userID)
                 setName(position.userName)
                 setStatus(position.status)
+                setAddress(position.address)
                 setOrderProduct(position.foodItem)
                 setPaymentType(position.paymentType)
                 setPickupType(position.pickupType)
@@ -58,14 +53,17 @@ class OrderListItemAdapter(
                 is UserOrderListFragment -> {
                     Utils().forward(activity, R.id.action_userOrderListFragment_to_userOrderDetailFragment)
                 }
+                is AdminOrderListFragment -> {
+                    Utils().forward(activity, R.id.action_adminOrderListFragment_to_adminOrderDetailFragment)
+                }
                 is AdminOrderPendingListFragment -> {
-                    Utils().forward(activity, R.id.action_adminOrderPendingListFragment_to_adminOrderDetailFragment)
+                    Utils().forward(activity, R.id.action_adminOrderListFragment_to_adminOrderDetailFragment)
                 }
                 is AdminOrderPrepareListFragment -> {
-                    Utils().forward(activity, R.id.action_adminOrderPrepareListFragment_to_adminOrderDetailFragment)
+                    Utils().forward(activity, R.id.action_adminOrderListFragment_to_adminOrderDetailFragment)
                 }
                 is AdminOrderDeliveringListFragment -> {
-                    Utils().forward(activity, R.id.action_adminOrderDeliveringListFragment_to_adminOrderDetailFragment)
+                    Utils().forward(activity, R.id.action_adminOrderListFragment_to_adminOrderDetailFragment)
                 }
                 is AdminReportListFragment -> {
                     Utils().forward(activity, R.id.action_adminReportListFragment_to_adminReportDetailFragment)

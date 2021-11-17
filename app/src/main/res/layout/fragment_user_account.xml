@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.seabuckcafe.models.PersonalInfoViewModel" />
@@ -54,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:paddingHorizontal="12dp"
-                android:textSize="18sp"
                 android:text="@string/full_name"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,20 +65,20 @@
                 android:id="@+id/yourUserName"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
                 android:layout_marginEnd="8dp"
                 android:text="@{viewModel.name}"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textAlignment="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/userNameForward"
-                tools:text="Your Name"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Your Name" />
 
             <Button
                 android:id="@+id/userNameForward"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/ic_forward"
+                android:background="@drawable/ic_edit"
                 android:backgroundTint="@color/transparentColor"
                 android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_fullName)}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +114,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/ic_forward"
+                android:background="@drawable/ic_edit"
                 android:backgroundTint="@color/transparentColor"
                 android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_password)}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -148,22 +149,22 @@
                 android:id="@+id/yourPhoneNumber"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
                 android:layout_marginEnd="8dp"
                 android:text="@{viewModel.phoneNumber}"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textAlignment="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/phoneNumberForward"
-                tools:text="0123456789"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="0123456789" />
 
             <Button
                 android:id="@+id/phoneNumberForward"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="24dp"
-                android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_phone_number)}"
-                android:background="@drawable/ic_forward"
+                android:background="@drawable/ic_edit"
                 android:backgroundTint="@color/transparentColor"
+                android:onClick="@{() -> userAccountBinding.setForwardText(@string/your_phone_number)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

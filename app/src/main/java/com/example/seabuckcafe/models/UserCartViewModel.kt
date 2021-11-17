@@ -16,14 +16,14 @@ class UserCartViewModel: ViewModel() {
     private val _isQuantityZero = MutableLiveData(false)
     val isQuantityZero: LiveData<Boolean> get() = _isQuantityZero
 
-    private val _subTotal = MutableLiveData<Double>(0.00)
+    private val _subTotal = MutableLiveData(0.00)
     val subTotal: LiveData<Double> get() = _subTotal
 
     private val _pickType = MutableLiveData<String?>()
-    val pickType: MutableLiveData<String?> get() = _pickType
+    val pickType: LiveData<String?> get() = _pickType
 
     private val _paymentType = MutableLiveData<String?>()
-    val paymentType: MutableLiveData<String?> get() = _paymentType
+    val paymentType: LiveData<String?> get() = _paymentType
 
     private var isAdd: Boolean = false
 

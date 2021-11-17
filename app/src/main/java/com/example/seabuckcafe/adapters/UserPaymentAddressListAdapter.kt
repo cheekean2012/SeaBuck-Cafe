@@ -48,6 +48,7 @@ class UserPaymentAddressListAdapter(
 
     override fun onBindViewHolder(holder: UserPaymentAddressViewHolder, position: Int) {
         val item = userAddressList[position]
+
         holder.userAddress.text = item.address
     }
 
