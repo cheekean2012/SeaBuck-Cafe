@@ -160,10 +160,8 @@ class AdminFoodDetailFragment: Fragment() {
             )
             Log.d("imageurl", "$mImageUri")
 
-            showProgress()
             Firestore().updateFoodMenuItem(this, requireContext(), mImageUri, updateFoodItem)
 
-            closeProgress()
 
         // Upload to firebase
         } else {
@@ -188,11 +186,8 @@ class AdminFoodDetailFragment: Fragment() {
                         switch
                     )
 
-                    showProgress()
-                    Firestore().uploadFoodMenuItem(requireContext(), mImageUri, foodItem)
+                    Firestore().uploadFoodMenuItem(this, requireContext(), mImageUri, foodItem)
 
-                    closeProgress()
-                    Utils().backward(this, R.id.adminFoodItemListFragment)
                 } else {
                     Toast.makeText(requireContext(),
                         "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
@@ -328,7 +323,7 @@ class AdminFoodDetailFragment: Fragment() {
         })
     }
 
-    private fun showProgress() {
+    fun showProgress() {
         mProgressDialog = Dialog(requireContext())
 
         mProgressDialog.setContentView(R.layout.dialog_progress)
@@ -339,7 +334,7 @@ class AdminFoodDetailFragment: Fragment() {
         mProgressDialog.show()
     }
 
-    private fun closeProgress() {
+    fun closeProgress() {
         mProgressDialog.dismiss()
     }
 

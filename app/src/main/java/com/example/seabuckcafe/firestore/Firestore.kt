@@ -15,6 +15,7 @@ import com.example.seabuckcafe.SplashScreenFragment
 import com.example.seabuckcafe.adapters.*
 import com.example.seabuckcafe.models.*
 import com.example.seabuckcafe.services.NotificationService
+import com.example.seabuckcafe.ui.admin.AdminFoodDetailFragment
 import com.example.seabuckcafe.ui.home.AdminHomeFragment
 import com.example.seabuckcafe.ui.login.LoginFragment
 import com.example.seabuckcafe.ui.order.AdminOrderDeliveringListFragment
@@ -131,7 +132,7 @@ class Firestore {
             }
     }
 
-    fun uploadFoodMenuItem(context: Context, imageUri: Uri?, foodItem: AdminMenuItem) {
+    fun uploadFoodMenuItem(activity: Fragment, context: Context, imageUri: Uri?, foodItem: AdminMenuItem) {
 
         // Generate a document id
         val document = mFirestore.collection(Constants.MENUS).document()
@@ -146,18 +147,28 @@ class Firestore {
             contentType = "image/jpeg"
         }
 
-        storageReference.putFile(imageUri!!, metadata).addOnSuccessListener { result ->
-            Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
+        when (activity) {
+            is AdminFoodDetailFragment -> {
+                activity.showProgress()
+                storageReference.putFile(imageUri!!, metadata).addOnSuccessListener { result ->
+                    Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
 
-            result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
-                Log.d("Downloadable image URL ", uri.toString())
-                foodItem.image = uri.toString()
+                    result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                        Log.d("Downloadable image URL ", uri.toString())
+                        foodItem.image = uri.toString()
 
-                mFirestore.collection(Constants.MENUS).document(document.id)
-                    .set(foodItem, SetOptions.merge())
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Added successful!", Toast.LENGTH_SHORT).show()
+
+                        mFirestore.collection(Constants.MENUS).document(document.id)
+                            .set(foodItem, SetOptions.merge())
+                            .addOnSuccessListener {
+                                activity.closeProgress()
+                                Toast.makeText(context, "Added successful!", Toast.LENGTH_SHORT).show()
+                                Utils().backward(activity, R.id.adminFoodItemListFragment)
+                            }.addOnFailureListener {
+                                activity.closeProgress()
+                            }
                     }
+                }
             }
         }
     }
@@ -186,50 +197,61 @@ class Firestore {
 
     fun updateFoodMenuItem(activity: Fragment, context: Context, imageUri: Uri?, foodItem: AdminMenuItem) {
 
-        // If the admin didn't change picture, it will only update others information and save same picture
-        if (imageUri == null) {
-            mFirestore.collection(Constants.MENUS)
-                .document(foodItem.id!!)
-                .update(mapOf(
-                    "image" to foodItem.image,
-                    "title" to foodItem.title,
-                    "type" to foodItem.type,
-                    "price" to foodItem.price,
-                    "description" to foodItem.description,
-                    "available" to foodItem.available
-                )).addOnSuccessListener {
-                    Toast.makeText(context, "Updated successful!", Toast.LENGTH_SHORT).show()
-                    Utils().backward(activity, R.id.adminFoodItemListFragment)
-                }
-        } else {
-            // Set image path file
-            val storageReference = FirebaseStorage.getInstance().reference.child(
-                "menus/" + foodItem.id  + "menu.jpg"
-            )
-            // Set image mime type
-            val metadata = storageMetadata {
-                contentType = "image/jpeg"
-            }
-            // Upload picture to storage
-            storageReference.putFile(imageUri, metadata).addOnSuccessListener { result ->
-                Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
-
-                result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
-                    Log.d("Downloadable image URL ", uri.toString())
-                    // Updated all information
+        when (activity) {
+            is AdminFoodDetailFragment -> {
+                activity.showProgress()
+                // If the admin didn't change picture, it will only update others information and save same picture
+                if (imageUri == null) {
                     mFirestore.collection(Constants.MENUS)
                         .document(foodItem.id!!)
                         .update(mapOf(
-                            "image" to uri.toString(),
+                            "image" to foodItem.image,
                             "title" to foodItem.title,
                             "type" to foodItem.type,
                             "price" to foodItem.price,
                             "description" to foodItem.description,
                             "available" to foodItem.available
                         )).addOnSuccessListener {
+                            activity.closeProgress()
                             Toast.makeText(context, "Updated successful!", Toast.LENGTH_SHORT).show()
                             Utils().backward(activity, R.id.adminFoodItemListFragment)
+                        }.addOnFailureListener {
+                            activity.closeProgress()
                         }
+                } else {
+                    // Set image path file
+                    val storageReference = FirebaseStorage.getInstance().reference.child(
+                        "menus/" + foodItem.id  + "menu.jpg"
+                    )
+                    // Set image mime type
+                    val metadata = storageMetadata {
+                        contentType = "image/jpeg"
+                    }
+                    // Upload picture to storage
+                    storageReference.putFile(imageUri, metadata).addOnSuccessListener { result ->
+                        Log.d("Image URL: ", result.metadata!!.reference!!.downloadUrl.toString() )
+
+                        result.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                            Log.d("Downloadable image URL ", uri.toString())
+                            // Updated all information
+                            mFirestore.collection(Constants.MENUS)
+                                .document(foodItem.id!!)
+                                .update(mapOf(
+                                    "image" to uri.toString(),
+                                    "title" to foodItem.title,
+                                    "type" to foodItem.type,
+                                    "price" to foodItem.price,
+                                    "description" to foodItem.description,
+                                    "available" to foodItem.available
+                                )).addOnSuccessListener {
+                                    activity.closeProgress()
+                                    Toast.makeText(context, "Updated successful!", Toast.LENGTH_SHORT).show()
+                                    Utils().backward(activity, R.id.adminFoodItemListFragment)
+                                }.addOnFailureListener {
+                                    activity.closeProgress()
+                                }
+                        }
+                    }
                 }
             }
         }
