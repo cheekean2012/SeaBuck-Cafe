@@ -135,11 +135,17 @@ class AdminFoodDetailFragment: Fragment() {
 
     private fun uploadFoodMenuItem() {
 
-        // Check the share view model retrieve data from admin food item list is not null
-        // If not null, it will update to firebase
-        if (shareViewModel.image.value != null && shareViewModel.title.value != null
-            && shareViewModel.type.value != null && shareViewModel.description.value != null
-            && shareViewModel.price.value != null) {
+        val regex  = Regex("^\\d+([.]\\d{1,2})?\$")
+        val price = binding.foodPriceText.text.toString()
+        val valid = regex.matches(price)
+
+        if (valid) {
+
+            // Check the share view model retrieve data from admin food item list is not null
+            // If not null, it will update to firebase
+            if (shareViewModel.image.value != null && shareViewModel.title.value != null
+                && shareViewModel.type.value != null && shareViewModel.description.value != null
+                && shareViewModel.price.value != null) {
 
                 binding.apply {
                     shareViewModel.setTitle(foodTitleText.text.toString())
@@ -157,47 +163,50 @@ class AdminFoodDetailFragment: Fragment() {
                     shareViewModel.price.value.toString(),
                     shareViewModel.description.value.toString(),
                     shareViewModel.available.value!!
-            )
-            Log.d("imageurl", "$mImageUri")
+                )
+                Log.d("imageurl", "$mImageUri")
 
-            Firestore().updateFoodMenuItem(this, requireContext(), mImageUri, updateFoodItem)
+                Firestore().updateFoodMenuItem(this, requireContext(), mImageUri, updateFoodItem)
 
 
-        // Upload to firebase
-        } else {
+                // Upload to firebase
+            } else {
 
-            val title = binding.foodTitleText.text.toString().trim { it <= ' ' }
-            val type = binding.foodTypeEditText.text.toString().trim { it <= ' ' }
-            val price = binding.foodPriceText.text.toString().trim { it <= ' ' }
-            val description = binding.foodDescriptionText.text.toString().trim { it <= ' ' }
-            val switch = binding.switches.isChecked
+                val title = binding.foodTitleText.text.toString().trim { it <= ' ' }
+                val type = binding.foodTypeEditText.text.toString().trim { it <= ' ' }
+                val price = binding.foodPriceText.text.toString().trim { it <= ' ' }
+                val description = binding.foodDescriptionText.text.toString().trim { it <= ' ' }
+                val switch = binding.switches.isChecked
 
-            if (mImageUri != null) {
+                if (mImageUri != null) {
 
-                if (title.isNotEmpty() && type.isNotEmpty() && price.isNotEmpty() && description.isNotEmpty()) {
+                    if (title.isNotEmpty() && type.isNotEmpty() && price.isNotEmpty() && description.isNotEmpty()) {
 
-                    val foodItem = AdminMenuItem(
-                        "",
-                        "",
-                        title,
-                        type,
-                        price,
-                        description,
-                        switch
-                    )
+                        val foodItem = AdminMenuItem(
+                            "",
+                            "",
+                            title,
+                            type,
+                            price,
+                            description,
+                            switch
+                        )
 
-                    Firestore().uploadFoodMenuItem(this, requireContext(), mImageUri, foodItem)
+                        Firestore().uploadFoodMenuItem(this, requireContext(), mImageUri, foodItem)
 
+                    } else {
+                        Toast.makeText(requireContext(),
+                            "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 } else {
                     Toast.makeText(requireContext(),
-                        "Please fill all the info before add food menu!", Toast.LENGTH_SHORT)
+                        "Please insert image before add food menu!", Toast.LENGTH_SHORT)
                         .show()
                 }
-            } else {
-                Toast.makeText(requireContext(),
-                    "Please insert image before add food menu!", Toast.LENGTH_SHORT)
-                    .show()
             }
+        } else {
+            Toast.makeText(requireContext(), "Please input correct information", Toast.LENGTH_SHORT).show()
         }
     }
 
